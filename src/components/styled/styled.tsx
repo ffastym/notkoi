@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Card = styled.div`
   padding: 18px 20px;
@@ -24,8 +24,7 @@ export const FlexBoxCol = styled.div`
 `;
 
 export const Button = styled.button`
-  background-color: ${(props) =>
-    props.disabled ? "#6e6e6e" : "var(--tg-theme-button-color)"};
+  background-color: ${(props) => (props.disabled ? '#6e6e6e' : 'var(--tg-theme-button-color)')};
   border: 0;
   border-radius: 8px;
   padding: 10px 20px;
@@ -33,7 +32,9 @@ export const Button = styled.button`
   font-weight: 700;
   width: 100%;
   cursor: pointer;
-  pointer-events: ${(props) => (props.disabled ? "none" : "inherit")};
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'inherit')};
+  display: flex;
+  justify-content: center;
 `;
 
 export const Ellipsis = styled.div`
@@ -43,7 +44,7 @@ export const Ellipsis = styled.div`
 `;
 
 export const LakePicture = styled.div`
-  background: url("/img/lake-1.jpg") no-repeat top;
+  background: url('/notkoi/img/lake-1.jpg') no-repeat top;
   background-size: cover;
   width: 100%;
   height: 100vh;
@@ -56,13 +57,13 @@ export const Header = styled.div`
   display: flex;
   top: 0;
   left: 0;
-  justify-content: flex-end;
+  justify-content: space-between;
 `;
 
 export const Rod = styled.div`
   position: absolute;
   bottom: 0;
-  background: url("/img/rod.png") no-repeat top;
+  background: url('/notkoi/img/rod.png') no-repeat top;
   background-size: contain;
   width: 100%;
   height: 350px;
@@ -102,15 +103,13 @@ export const BottomNavigationButtonImg = styled.img`
   max-height: 100%;
 `;
 
-
 export const BaitImg = styled.span`
   display: block;
-  z-index: 1;
-  height: 12px;
-  width: 12px;
+  height: 20px;
+  width: 20px;
   position: absolute;
   bottom: 35%;
   left: 50%;
-  background: url('/img/fishing-baits.png') no-repeat center;
+  background: url('/notkoi/img/fishing-baits.png') no-repeat center;
   background-size: contain;
 `;
