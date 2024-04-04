@@ -1,21 +1,18 @@
 import './App.css';
 import styled from 'styled-components';
-import {
-  BaitImg,
-  BottomNavigation,
-  BottomNavigationButton,
-  BottomNavigationButtonImg,
-  FlexBoxRow,
-  Header,
-  Rod,
-} from './components/styled/styled';
-import { TonConnectButton } from '@tonconnect/ui-react';
-import { useTonConnect } from './hooks/useTonConnect';
+import { BaitImg, Rod } from './components/styled/styled';
 import '@twa-dev/sdk';
 import { Lake } from './components/Lake';
-import { Overlay } from './components/Overlay';
 import { useEffect, useState } from 'react';
 import { ProgressBar } from './components/ProgressBar';
+import { Profile } from './sections/Profile';
+import { Leaderboard } from './sections/Leaderboard';
+import { BaitsBox } from './sections/BaitsBox';
+import { TackleBox } from './sections/TackleBox';
+import { LandingNet } from './sections/LandingNet';
+import { Navigation } from './sections/Navigation';
+import { Header } from './sections/Header';
+import { PullButton } from './sections/PullButton';
 
 const StyledApp = styled.div`
   background-color: #e8e8e8;
@@ -41,7 +38,6 @@ const PULLING_SPEED = 0.3;
 const defaultBaitPosition = [50, 35];
 
 function App() {
-  const { network } = useTonConnect();
   const [baitTopPosition, setBaitTopPosition] = useState(defaultBaitPosition[1]);
   const [baitLeftPosition, setBaitLeftPosition] = useState(defaultBaitPosition[0]);
   const [loadingPercent, setLoadingPercent] = useState<number | null>(null);
@@ -176,148 +172,24 @@ function App() {
     <StyledApp>
       <AppContainer>
         <Lake />
-        <Header>
-          {/*<Button>
-              {network
-                ? network === CHAIN.MAINNET
-                  ? "mainnet"
-                  : "testnet"
-                : "N/A"}
-            </Button>*/}
-          <FlexBoxRow>
-            <div style={{ display: 'flex', alignItems: 'center', marginRight: 8 }}>
-              <img style={{ marginRight: 8, height: 25, width: 25 }} src="/notkoi/img/coin.png" alt="" />
-              <span style={{ color: '#fff', fontWeight: 500 }}>1 000</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <img style={{ marginRight: 8, height: 25, width: 25 }} src="/notkoi/img/currency.png" alt="" />
-              <span style={{ color: '#fff', fontWeight: 500 }}>25</span>
-            </div>
-          </FlexBoxRow>
-          <TonConnectButton />
-        </Header>
+        <Header />
         {loadingPercent !== null && <ProgressBar percent={100 - loadingPercent} />}
         <BaitImg style={{ bottom: `${baitTopPosition}%`, left: `${baitLeftPosition}%` }} />
         <Rod />
-        <BottomNavigation>
-          <BottomNavigationButton onClick={showTackleBox}>
-            <BottomNavigationButtonImg src="/notkoi/img/toolbox.png" alt="" />
-          </BottomNavigationButton>
-          <BottomNavigationButton onClick={showBaitsBox}>
-            <BottomNavigationButtonImg src="/notkoi/img/worm (1).png" alt="" />
-          </BottomNavigationButton>
-          <BottomNavigationButton>
-            <BottomNavigationButtonImg onClick={showLeaderboard} src="/notkoi/img/leaderboard.png" alt="" />
-          </BottomNavigationButton>
-          <BottomNavigationButton>
-            <BottomNavigationButtonImg onClick={showProfile} src="/notkoi/img/fisher.png" alt="" />
-          </BottomNavigationButton>
-        </BottomNavigation>
-        <button
-          onTouchStart={incLoad}
-          onTouchEnd={decLoad}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '50%',
-            zIndex: 1,
-            position: 'absolute',
-            right: 16,
-            bottom: 100,
-            background: 'rgba(255,255,255,.3)',
-            border: '2px solid #fff',
-            height: 75,
-            width: 75,
-            userSelect: 'none',
-          }}
-        >
-          <img style={{ height: 45, width: 45 }} src="/notkoi/img/reels-2-white.png" alt="" />
-        </button>
-        <Overlay
-          visible={isLandingNetVisible}
-          title={'You catch the fish!'}
-          accept={{
-            text: (
-              <>
-                <span style={{ color: '#fff' }}>Sell</span>
-                <img style={{ margin: '0 5px 0 10px', height: 16, width: 16 }} src="/notkoi/img/coin.png" alt="" />
-                <span style={{ color: '#fff' }}>5</span>
-              </>
-            ),
-            action: hideLandingNet,
-          }}
-          reject={{ text: 'Release', action: hideLandingNet }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <img style={{ marginTop: -32 }} src="/notkoi/img/token.png" alt="" />
-            <span style={{ fontSize: 18, fontWeight: 500, marginTop: -28 }}>Koi fish</span>
-          </div>
-        </Overlay>
-
-        <Overlay
-          visible={isTackleBoxVisible}
-          title={'Tackle box'}
-          accept={{
-            text: 'OK',
-            action: hideTackleBox,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <img style={{ height: 100, width: 100 }} src="/notkoi/img/coming-soon.png" alt="" />
-            <span style={{ marginTop: 16, fontWeight: 500, textAlign: 'center' }}>
-              Buy a fishing equipment to catch more and faster
-            </span>
-          </div>
-        </Overlay>
-
-        <Overlay
-          visible={isBaitsBoxVisible}
-          title={'Baits box'}
-          accept={{
-            text: 'OK',
-            action: hideBaitsBox,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <img style={{ height: 100, width: 100 }} src="/notkoi/img/coming-soon.png" alt="" />
-            <span style={{ marginTop: 16, fontWeight: 500, textAlign: 'center' }}>
-              Buy a fishing baits to increase a chance to catch a Koi fish!
-            </span>
-          </div>
-        </Overlay>
-
-        <Overlay
-          visible={isLeaderboardVisible}
-          title={'Leaderboard'}
-          accept={{
-            text: 'OK',
-            action: hideLeaderboard,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <img style={{ height: 100, width: 100 }} src="/notkoi/img/coming-soon.png" alt="" />
-            <span style={{ marginTop: 16, fontWeight: 500, textAlign: 'center' }}>
-              Your score in the fisherman rating
-            </span>
-          </div>
-        </Overlay>
-
-        <Overlay
-          visible={isProfiledVisible}
-          title={'Profile'}
-          accept={{
-            text: 'OK',
-            action: hideProfile,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <img style={{ height: 100, width: 100 }} src="/notkoi/img/coming-soon.png" alt="" />
-            <span style={{ marginTop: 16, fontWeight: 500, textAlign: 'center' }}>
-              Your profile, friends, rewards, etc.
-            </span>
-          </div>
-        </Overlay>
+        <Navigation
+          buttons={[
+            { picture: '/notkoi/img/toolbox.png', action: showTackleBox },
+            { picture: '/notkoi/img/worm (1).png', action: showBaitsBox },
+            { picture: '/notkoi/img/leaderboard.png', action: showLeaderboard },
+            { picture: '/notkoi/img/fisher.png', action: showProfile },
+          ]}
+        />
+        <PullButton onPull={incLoad} onPush={decLoad} />
+        <LandingNet hide={hideLandingNet} isVisible={isLandingNetVisible} />
+        <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} />
+        <BaitsBox hide={hideBaitsBox} isVisible={isBaitsBoxVisible} />
+        <Leaderboard isVisible={isLeaderboardVisible} hide={hideLeaderboard} />
+        <Profile hide={hideProfile} isVisible={isProfiledVisible} />
       </AppContainer>
     </StyledApp>
   );

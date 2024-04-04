@@ -113,3 +113,5 @@ export const BaitImg = styled.span`
   background: url('/notkoi/img/fishing-baits.png') no-repeat center;
   background-size: contain;
 `;
+
+export default { Header };
