@@ -2,13 +2,15 @@ import { ApolloLink, createHttpLink, fromPromise, Operation, split, useApolloCli
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
+// @ts-expect-error sddddd
 import { createUploadLink } from 'apollo-upload-client';
 import { useCallback, useMemo, useRef } from 'react';
 import { urlGraphQLServer } from '../config/apollo';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getSubscriptionClient } from './subscriptionClient';
 
-type ResolveFunction = (value: unknown) => void;
+// eslint-disable-next-line no-unused-vars
+type ResolveFunction = (value: any) => void;
 
 const isFile = (value: any) => {
   return value instanceof File;
@@ -100,7 +102,7 @@ export function useApollo() {
   const uploadLink = useMemo(
     () =>
       createUploadLink({
-        uri: ({ operationName }) => `${urlGraphQLServer}?oUpload=${operationName}`,
+        uri: ({ operationName }: any) => `${urlGraphQLServer}?oUpload=${operationName}`,
         fetch: customFetch as any,
       }),
     [],
@@ -114,11 +116,6 @@ export function useApollo() {
     () => split(isUpload, uploadLink as unknown as ApolloLink, requestLink),
     [requestLink, uploadLink],
   );
-
-  const resolvePendingRequests = (token: any) => {
-    pendingRequests.current.map((callback) => callback(token));
-    pendingRequests.current = [];
-  };
 
   const updateOperationWithToken = useCallback((data: any, operation: Operation) => {
     const oldHeaders = operation.getContext().headers;
@@ -163,27 +160,7 @@ export function useApollo() {
                 }
 
                 isTokenUpdated.current = true;
-
-                return fromPromise(
-                  refresh({
-                    variables: {
-                      refreshToken,
-                    },
-                  })
-                    .catch(() => {
-                      return logout();
-                    })
-                    .finally(() => {
-                      isTokenUpdated.current = false;
-                    }),
-                )
-                  .filter((value) => Boolean(value))
-                  .flatMap(({ data }: any) => {
-                    updateOperationWithToken(data, operation);
-                    resolvePendingRequests(data);
-
-                    return forward(operation);
-                  });
+                return forward(operation);
             }
           }
         }
