@@ -180,10 +180,10 @@ function App() {
         <Rod />
         <Navigation
           buttons={[
-            { picture: '/notkoi/img/toolbox.png', action: showTackleBox },
-            { picture: '/notkoi/img/worm (1).png', action: showBaitsBox },
-            { picture: '/notkoi/img/leaderboard.png', action: showLeaderboard },
-            { picture: '/notkoi/img/fisher.png', action: showProfile },
+            { picture: '/img/toolbox.png', action: showTackleBox },
+            { picture: '/img/worm (1).png', action: showBaitsBox },
+            { picture: '/img/leaderboard.png', action: showLeaderboard },
+            { picture: '/img/fisher.png', action: showProfile },
           ]}
         />
         <PullButton onPull={incLoad} onPush={decLoad} />

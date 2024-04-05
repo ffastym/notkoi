@@ -17,15 +17,15 @@ export function Navigation({ buttons }: NavigationProps) {
     </BottomNavigation>
   );
   //     <BottomNavigationButton onClick={showTackleBox}>
-  //   <BottomNavigationButtonImg src="/notkoi/img/toolbox.png" alt="" />
+  //   <BottomNavigationButtonImg src="/img/toolbox.png" alt="" />
   //   </BottomNavigationButton>
   //   <BottomNavigationButton onClick={showBaitsBox}>
-  // <BottomNavigationButtonImg src="/notkoi/img/worm (1).png" alt="" />
+  // <BottomNavigationButtonImg src="/img/worm (1).png" alt="" />
   // </BottomNavigationButton>
   // <BottomNavigationButton>
-  // <BottomNavigationButtonImg onClick={showLeaderboard} src="/notkoi/img/leaderboard.png" alt="" />
+  // <BottomNavigationButtonImg onClick={showLeaderboard} src="/img/leaderboard.png" alt="" />
   // </BottomNavigationButton>
   // <BottomNavigationButton>
-  // <BottomNavigationButtonImg onClick={showProfile} src="/notkoi/img/fisher.png" alt="" />
+  // <BottomNavigationButtonImg onClick={showProfile} src="/img/fisher.png" alt="" />
   //   </BottomNavigationButton>
 }

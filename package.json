@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://ffastym.github.io/notkoi",
+  "homepage": "https://app.notkoi.site",
   "scripts": {
     "start:turbo:local": "yarn schema:local & yarn codegen & yarn dev",
     "dev": "vite",

@@ -21,7 +21,7 @@ export function PullButton({ onPull, onPush }: PullButtonProps) {
         userSelect: 'none',
       }}
     >
-      <img style={{ height: 45, width: 45 }} src="/notkoi/img/reels-2-white.png" alt="" />
+      <img style={{ height: 45, width: 45 }} src="/img/reels-2-white.png" alt="" />
     </button>
   );
 }

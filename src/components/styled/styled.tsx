@@ -44,7 +44,7 @@ export const Ellipsis = styled.div`
 `;
 
 export const LakePicture = styled.div`
-  background: url('/notkoi/img/lake-1.jpg') no-repeat top;
+  background: url('/img/lake-1.jpg') no-repeat top;
   background-size: cover;
   width: 100%;
   height: 100vh;
@@ -63,7 +63,7 @@ export const Header = styled.div`
 export const Rod = styled.div`
   position: absolute;
   bottom: 0;
-  background: url('/notkoi/img/rod.png') no-repeat top;
+  background: url('/img/rod.png') no-repeat top;
   background-size: contain;
   width: 100%;
   height: 350px;
@@ -110,7 +110,7 @@ export const BaitImg = styled.span`
   position: absolute;
   bottom: 35%;
   left: 50%;
-  background: url('/notkoi/img/fishing-baits.png') no-repeat center;
+  background: url('/img/fishing-baits.png') no-repeat center;
   background-size: contain;
 `;
 

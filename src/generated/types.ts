@@ -12,11 +12,6 @@ export type Scalars = {
   Float: number;
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
-  mutate: Scalars['Boolean'];
-};
-
 export type Query = {
   __typename?: 'Query';
   releaseNotesV2?: Maybe<Scalars['String']>;
