@@ -3,9 +3,8 @@ import uniqBy from 'lodash.uniqby';
 import { FieldPolicy } from '@apollo/client/cache/inmemory/policies';
 import { LocalStorageWrapper, persistCache } from 'apollo3-cache-persist';
 
-export const urlGraphQLServer = 'http://localhost:3000/graphql'; //process.env.REACT_APP_BASE_URL_GRAPHQL;
-
-export const urlGraphQLSubscriptions = 'ws://localhost:3000/graphql';
+export const urlGraphQLServer = import.meta.env.VITE_BASE_URL_GRAPHQL;
+export const urlGraphQLSubscriptions = import.meta.env.VITE_BASE_URL_GRAPHQL_SUBSCRIPTIONS;
 
 const defaultMergeOptions: FieldPolicy<any> = {
   keyArgs: false,
