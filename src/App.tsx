@@ -13,6 +13,7 @@ import { LandingNet } from './sections/LandingNet';
 import { Navigation } from './sections/Navigation';
 import { Header } from './sections/Header';
 import { PullButton } from './sections/PullButton';
+import { useApollo } from './apollo/useApollo';
 
 const StyledApp = styled.div`
   background-color: #e8e8e8;
@@ -46,6 +47,7 @@ function App() {
   const [isBaitsBoxVisible, setIsBaitsBoxVisible] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
   const [isProfiledVisible, setIsProfileVisible] = useState(false);
+  useApollo();
 
   const resetToDefault = () => {
     clearInterval(loading);

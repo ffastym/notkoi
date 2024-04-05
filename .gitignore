@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# IDEA
+/.idea
+
+# GraphqlSchema
+graphql.schema.json
+graphql.schema.json.graphql
+
