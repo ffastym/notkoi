@@ -1,7 +1,3 @@
 subscription newChatMessage {
   newChatMessage
 }
-
-query RN ($input: String!) {
-  releaseNotesV2(input: $input)
-}

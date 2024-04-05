@@ -13,7 +13,7 @@ import { LandingNet } from './sections/LandingNet';
 import { Navigation } from './sections/Navigation';
 import { Header } from './sections/Header';
 import { PullButton } from './sections/PullButton';
-import { useApollo } from './apollo/useApollo';
+import { useNewChatMessageSubscription } from './App.operations.generated';
 
 const StyledApp = styled.div`
   background-color: #e8e8e8;
@@ -47,7 +47,12 @@ function App() {
   const [isBaitsBoxVisible, setIsBaitsBoxVisible] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
   const [isProfiledVisible, setIsProfileVisible] = useState(false);
-  useApollo();
+  const [isBiting, setIsBiting] = useState(false);
+
+  const { data } = useNewChatMessageSubscription({
+    shouldResubscribe: true,
+    fetchPolicy: 'no-cache',
+  });
 
   const resetToDefault = () => {
     clearInterval(loading);
@@ -57,9 +62,14 @@ function App() {
     setBaitTopPosition(defaultBaitPosition[1]);
     setBaitLeftPosition(defaultBaitPosition[0]);
     setLoadingPercent(null);
+    setIsBiting(false);
   };
 
   const incLoad = () => {
+    if (!isBiting) {
+      return;
+    }
+
     clearInterval(loading);
 
     if (!moving) {
@@ -86,6 +96,10 @@ function App() {
   };
 
   const decLoad = () => {
+    if (!isBiting) {
+      return;
+    }
+
     clearInterval(loading);
 
     if (!moving) {
@@ -170,6 +184,16 @@ function App() {
     }
   }, [baitTopPosition]);
 
+  useEffect(() => {
+    if (data?.newChatMessage) {
+      setIsBiting(true);
+
+      if (!moving) {
+        moving = setInterval(changeBaitLeftPosition, 50);
+      }
+    }
+  }, [data]);
+
   return (
     <StyledApp>
       <AppContainer>
@@ -178,6 +202,11 @@ function App() {
         {loadingPercent !== null && <ProgressBar percent={100 - loadingPercent} />}
         <BaitImg style={{ bottom: `${baitTopPosition}%`, left: `${baitLeftPosition}%` }} />
         <Rod />
+        {isBiting && (
+          <h1 style={{ color: 'white', position: 'absolute', top: 100, left: '50%', transform: 'translateX(-50%' }}>
+            BITING!!!
+          </h1>
+        )}
         <Navigation
           buttons={[
             { picture: '/img/toolbox.png', action: showTackleBox },
