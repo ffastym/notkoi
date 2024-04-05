@@ -52,8 +52,8 @@ export const getSubscriptionClient = (): SubscriptionClient =>
       },
       connectionParams: async () => {
         return {
-          // @ts-expect-error ddsd
-          accessToken: window?.Telegram?.WebApp?.initData || 'empty',
+          // @ts-expect-error ddd
+          accessToken: import.meta.env.VITE_TELEGRAM_INIT_DATA || window?.Telegram?.WebApp?.initData || '',
         };
       },
     }));

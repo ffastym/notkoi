@@ -1,3 +1,27 @@
 subscription newChatMessage {
   newChatMessage
 }
+
+query Login {
+  login {
+    coins
+    language_code
+  }
+}
+
+fragment CatchedFish on Fish {
+  id
+  name
+  price
+  picture
+}
+
+query CatchFish {
+  catchFish {
+    ...CatchedFish
+  }
+}
+
+mutation SellFish ($fishId: Float!) {
+  sellFish(fishId: $fishId)
+}

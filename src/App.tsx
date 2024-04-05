@@ -13,7 +13,8 @@ import { LandingNet } from './sections/LandingNet';
 import { Navigation } from './sections/Navigation';
 import { Header } from './sections/Header';
 import { PullButton } from './sections/PullButton';
-import { useNewChatMessageSubscription } from './App.operations.generated';
+import { useCatchFishLazyQuery, useNewChatMessageSubscription, useSellFishMutation } from './App.operations.generated';
+import { User } from './generated/types';
 
 const StyledApp = styled.div`
   background-color: #e8e8e8;
@@ -38,7 +39,7 @@ const PULLING_SPEED = 0.3;
 
 const defaultBaitPosition = [50, 35];
 
-function App() {
+function App({ user }: { user: User }) {
   const [baitTopPosition, setBaitTopPosition] = useState(defaultBaitPosition[1]);
   const [baitLeftPosition, setBaitLeftPosition] = useState(defaultBaitPosition[0]);
   const [loadingPercent, setLoadingPercent] = useState<number | null>(null);
@@ -53,6 +54,9 @@ function App() {
     shouldResubscribe: true,
     fetchPolicy: 'no-cache',
   });
+
+  const [catchFish, { data: catchFishData }] = useCatchFishLazyQuery({ fetchPolicy: 'no-cache' });
+  const [sell] = useSellFishMutation({ fetchPolicy: 'no-cache' });
 
   const resetToDefault = () => {
     clearInterval(loading);
@@ -179,10 +183,12 @@ function App() {
 
   useEffect(() => {
     if (baitTopPosition <= 0) {
-      showLandingNet();
-      resetToDefault();
+      catchFish().then(() => {
+        showLandingNet();
+        resetToDefault();
+      });
     }
-  }, [baitTopPosition]);
+  }, [baitTopPosition, catchFish]);
 
   useEffect(() => {
     if (data?.newChatMessage) {
@@ -194,11 +200,16 @@ function App() {
     }
   }, [data]);
 
+  const sellFish = async (fishId: number) => {
+    await sell({ variables: { fishId } });
+    hideLandingNet();
+  };
+
   return (
     <StyledApp>
       <AppContainer>
         <Lake />
-        <Header />
+        <Header coins={user.coins} />
         {loadingPercent !== null && <ProgressBar percent={100 - loadingPercent} />}
         <BaitImg style={{ bottom: `${baitTopPosition}%`, left: `${baitLeftPosition}%` }} />
         <Rod />
@@ -216,7 +227,14 @@ function App() {
           ]}
         />
         <PullButton onPull={incLoad} onPush={decLoad} />
-        <LandingNet hide={hideLandingNet} isVisible={isLandingNetVisible} />
+        {catchFishData && (
+          <LandingNet
+            hide={hideLandingNet}
+            isVisible={isLandingNetVisible}
+            sell={sellFish}
+            fish={catchFishData.catchFish}
+          />
+        )}
         <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} />
         <BaitsBox hide={hideBaitsBox} isVisible={isBaitsBoxVisible} />
         <Leaderboard isVisible={isLeaderboardVisible} hide={hideLeaderboard} />

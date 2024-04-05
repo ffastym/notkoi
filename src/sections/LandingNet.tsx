@@ -1,7 +1,14 @@
 import { Overlay } from '../components/Overlay';
 import { DialogProps } from '../types';
+import { CatchedFishFragment } from '../App.operations.generated';
 
-export function LandingNet({ isVisible, hide }: DialogProps) {
+export function LandingNet({
+  isVisible,
+  hide,
+  fish,
+  sell,
+  // eslint-disable-next-line no-unused-vars
+}: DialogProps & { fish: CatchedFishFragment; sell: (fishId: number) => void }) {
   return (
     <Overlay
       visible={isVisible}
@@ -11,16 +18,16 @@ export function LandingNet({ isVisible, hide }: DialogProps) {
           <>
             <span style={{ color: '#fff' }}>Sell</span>
             <img style={{ margin: '0 5px 0 10px', height: 16, width: 16 }} src="/img/coin.png" alt="" />
-            <span style={{ color: '#fff' }}>5</span>
+            <span style={{ color: '#fff' }}>{fish.price}</span>
           </>
         ),
-        action: hide,
+        action: () => sell(fish.id),
       }}
       reject={{ text: 'Release', action: hide }}
     >
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <img style={{ marginTop: -32 }} src="/img/token.png" alt="" />
-        <span style={{ fontSize: 18, fontWeight: 500, marginTop: -28 }}>Koi fish</span>
+        <img style={{ maxWidth: '100%', maxHeight: '100%' }} src={`/img/fish/${fish.picture}`} alt="" />
+        <span style={{ fontSize: 18, fontWeight: 500 }}>{fish.name}</span>
       </div>
     </Overlay>
   );

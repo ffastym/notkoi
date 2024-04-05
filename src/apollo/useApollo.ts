@@ -175,7 +175,10 @@ export function useApollo() {
   const authLink = useMemo(
     () =>
       setContext((_, { headers }) => {
-        const newHeaders = headers ? { ...headers } : { authorization: 'accessToken' };
+        const newHeaders = headers
+          ? { ...headers }
+          : // @ts-expect-error ssdf
+            { authorization: import.meta.env.VITE_TELEGRAM_INIT_DATA || window?.Telegram?.WebApp?.initData || '' };
 
         return {
           headers: newHeaders,
