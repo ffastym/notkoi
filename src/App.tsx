@@ -13,8 +13,12 @@ import { LandingNet } from './sections/LandingNet';
 import { Navigation } from './sections/Navigation';
 import { Header } from './sections/Header';
 import { PullButton } from './sections/PullButton';
-import { useCatchFishLazyQuery, useNewChatMessageSubscription, useSellFishMutation } from './App.operations.generated';
-import { User } from './generated/types';
+import {
+  LoginDataFragment,
+  useCatchFishLazyQuery,
+  useNewChatMessageSubscription,
+  useSellFishMutation,
+} from './App.operations.generated';
 
 const StyledApp = styled.div`
   background-color: #e8e8e8;
@@ -39,7 +43,7 @@ const PULLING_SPEED = 0.3;
 
 const defaultBaitPosition = [50, 35];
 
-function App({ user }: { user: User }) {
+function App({ user }: { user: LoginDataFragment }) {
   const [baitTopPosition, setBaitTopPosition] = useState(defaultBaitPosition[1]);
   const [baitLeftPosition, setBaitLeftPosition] = useState(defaultBaitPosition[0]);
   const [loadingPercent, setLoadingPercent] = useState<number | null>(null);

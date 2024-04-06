@@ -2,10 +2,14 @@ subscription newChatMessage {
   newChatMessage
 }
 
+fragment LoginData on User {
+  coins
+  language_code
+}
+
 query Login {
   login {
-    coins
-    language_code
+    ...LoginData
   }
 }
 

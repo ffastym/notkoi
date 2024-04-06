@@ -1,12 +1,13 @@
 import * as Types from './generated/types';
 
-import * as Apollo from '@apollo/client';
 import { gql } from '@apollo/client';
-
+import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type NewChatMessageSubscriptionVariables = Types.Exact<{ [key: string]: never }>;
 
 export type NewChatMessageSubscription = { __typename?: 'Subscription'; newChatMessage: number };
+
+export type LoginDataFragment = { __typename?: 'User'; coins: number; language_code: string };
 
 export type LoginQueryVariables = Types.Exact<{ [key: string]: never }>;
 
@@ -27,6 +28,12 @@ export type SellFishMutationVariables = Types.Exact<{
 
 export type SellFishMutation = { __typename?: 'Mutation'; sellFish: boolean };
 
+export const LoginDataFragmentDoc = gql`
+  fragment LoginData on User {
+    coins
+    language_code
+  }
+`;
 export const CatchedFishFragmentDoc = gql`
   fragment CatchedFish on Fish {
     id
@@ -70,10 +77,10 @@ export type NewChatMessageSubscriptionResult = Apollo.SubscriptionResult<NewChat
 export const LoginDocument = gql`
   query Login {
     login {
-      coins
-      language_code
+      ...LoginData
     }
   }
+  ${LoginDataFragmentDoc}
 `;
 
 /**

@@ -1,5 +1,5 @@
 import { Client, ClientOptions, createClient } from 'graphql-ws';
-import { urlGraphQLSubscriptions } from '../config/apollo';
+import { authorization, urlGraphQLSubscriptions } from '../config/apollo';
 
 interface SubscriptionClient extends Client {
   restart(): void;
@@ -52,8 +52,7 @@ export const getSubscriptionClient = (): SubscriptionClient =>
       },
       connectionParams: async () => {
         return {
-          // @ts-expect-error ddd
-          accessToken: import.meta.env.VITE_TELEGRAM_INIT_DATA || window?.Telegram?.WebApp?.initData || '',
+          accessToken: authorization,
         };
       },
     }));

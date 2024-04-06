@@ -6,6 +6,12 @@ import { LocalStorageWrapper, persistCache } from 'apollo3-cache-persist';
 export const urlGraphQLServer = import.meta.env.VITE_BASE_URL_GRAPHQL;
 export const urlGraphQLSubscriptions = import.meta.env.VITE_BASE_URL_GRAPHQL_SUBSCRIPTIONS;
 
+export const authorization =
+  import.meta.env.MODE === 'production'
+    ? // @ts-expect-error ssdf
+      window?.Telegram?.WebApp?.initData
+    : import.meta.env.VITE_TELEGRAM_INIT_DATA || '';
+
 const defaultMergeOptions: FieldPolicy<any> = {
   keyArgs: false,
   merge(existing = [], incoming) {

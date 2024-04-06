@@ -5,7 +5,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 // @ts-expect-error sddddd
 import { createUploadLink } from 'apollo-upload-client';
 import { useCallback, useMemo, useRef } from 'react';
-import { urlGraphQLServer } from '../config/apollo';
+import { authorization, urlGraphQLServer } from '../config/apollo';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getSubscriptionClient } from './subscriptionClient';
 
@@ -175,10 +175,7 @@ export function useApollo() {
   const authLink = useMemo(
     () =>
       setContext((_, { headers }) => {
-        const newHeaders = headers
-          ? { ...headers }
-          : // @ts-expect-error ssdf
-            { authorization: import.meta.env.VITE_TELEGRAM_INIT_DATA || window?.Telegram?.WebApp?.initData || '' };
+        const newHeaders = headers ? { ...headers } : { authorization };
 
         return {
           headers: newHeaders,
