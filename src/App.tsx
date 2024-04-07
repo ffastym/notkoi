@@ -7,27 +7,21 @@ import { useEffect, useState } from 'react';
 import { ProgressBar } from './components/ProgressBar';
 import { Profile } from './sections/Profile';
 import { Leaderboard } from './sections/Leaderboard';
-import { BaitsBox } from './sections/BaitsBox';
-import { TackleBox } from './sections/TackleBox';
+import TackleBox from './sections/TackleBox';
 import { LandingNet } from './sections/LandingNet';
 import { Navigation } from './sections/Navigation';
 import { Header } from './sections/Header';
 import { PullButton } from './sections/PullButton';
 import {
   LoginDataFragment,
+  LoginDataFragmentDoc,
   useCatchFishLazyQuery,
   useNewChatMessageSubscription,
   useSellFishMutation,
 } from './App.operations.generated';
+import { client } from './config/apollo';
 
 const StyledApp = styled.div`
-  background-color: #e8e8e8;
-  color: black;
-
-  @media (prefers-color-scheme: dark) {
-    background-color: #222;
-    color: white;
-  }
   min-height: 100vh;
 `;
 
@@ -157,6 +151,7 @@ function App({ user }: { user: LoginDataFragment }) {
   const showTackleBox = () => {
     setIsTackleBoxVisible(true);
   };
+
   const hideTackleBox = () => {
     setIsTackleBoxVisible(false);
   };
@@ -204,8 +199,25 @@ function App({ user }: { user: LoginDataFragment }) {
     }
   }, [data]);
 
+  const updateCoins = (coins: number) => {
+    client.cache.updateFragment(
+      {
+        fragment: LoginDataFragmentDoc,
+        id: `User:${user.id}`,
+      },
+      (prevLoginData: any) => {
+        return { ...prevLoginData, coins: prevLoginData.coins + coins };
+      },
+    );
+  };
+
   const sellFish = async (fishId: number) => {
-    await sell({ variables: { fishId } });
+    const { data } = await sell({ variables: { fishId } });
+
+    if (data) {
+      updateCoins(data.sellFish);
+    }
+
     hideLandingNet();
   };
 
@@ -225,7 +237,6 @@ function App({ user }: { user: LoginDataFragment }) {
         <Navigation
           buttons={[
             { picture: '/img/toolbox.png', action: showTackleBox },
-            { picture: '/img/worm (1).png', action: showBaitsBox },
             { picture: '/img/leaderboard.png', action: showLeaderboard },
             { picture: '/img/fisher.png', action: showProfile },
           ]}
@@ -239,8 +250,7 @@ function App({ user }: { user: LoginDataFragment }) {
             fish={catchFishData.catchFish}
           />
         )}
-        <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} />
-        <BaitsBox hide={hideBaitsBox} isVisible={isBaitsBoxVisible} />
+        <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} tackleBoxId={user.tackleBoxId} />
         <Leaderboard isVisible={isLeaderboardVisible} hide={hideLeaderboard} />
         <Profile hide={hideProfile} isVisible={isProfiledVisible} />
       </AppContainer>

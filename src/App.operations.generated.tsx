@@ -7,11 +7,14 @@ export type NewChatMessageSubscriptionVariables = Types.Exact<{ [key: string]: n
 
 export type NewChatMessageSubscription = { __typename?: 'Subscription'; newChatMessage: number };
 
-export type LoginDataFragment = { __typename?: 'User'; coins: number; language_code: string };
+export type LoginDataFragment = { __typename?: 'User'; id: string; coins: number; tackleBoxId: string };
 
 export type LoginQueryVariables = Types.Exact<{ [key: string]: never }>;
 
-export type LoginQuery = { __typename?: 'Query'; login: { __typename?: 'User'; coins: number; language_code: string } };
+export type LoginQuery = {
+  __typename?: 'Query';
+  login: { __typename?: 'User'; id: string; coins: number; tackleBoxId: string };
+};
 
 export type CatchedFishFragment = { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
 
@@ -26,12 +29,13 @@ export type SellFishMutationVariables = Types.Exact<{
   fishId: Types.Scalars['Float'];
 }>;
 
-export type SellFishMutation = { __typename?: 'Mutation'; sellFish: boolean };
+export type SellFishMutation = { __typename?: 'Mutation'; sellFish: number };
 
 export const LoginDataFragmentDoc = gql`
   fragment LoginData on User {
+    id
     coins
-    language_code
+    tackleBoxId
   }
 `;
 export const CatchedFishFragmentDoc = gql`

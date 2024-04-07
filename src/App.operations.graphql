@@ -3,8 +3,9 @@ subscription newChatMessage {
 }
 
 fragment LoginData on User {
+  id
   coins
-  language_code
+  tackleBoxId
 }
 
 query Login {

@@ -1,6 +1,6 @@
 import { Button, FlexBoxCol, FlexBoxRow } from './styled/styled';
 
-export function Overlay({ children, title, accept, reject, visible }: any) {
+export function Overlay({ children, title, accept, reject, visible, onClose }: any) {
   if (!visible) {
     return null;
   }
@@ -26,13 +26,18 @@ export function Overlay({ children, title, accept, reject, visible }: any) {
             style={{ fontSize: '20px', fontWeight: 'bold', color: '#000000', textAlign: 'center', display: 'block' }}
           >
             {title}
+            {onClose && <button className="close" onClick={onClose}></button>}
           </span>
         </div>
         <div style={{ flex: 1, padding: '0 16px' }}>{children}</div>
-        <FlexBoxRow style={{ padding: '16px' }}>
-          {accept && <Button onClick={accept.action}>{accept.text}</Button>}
-          {reject && <Button onClick={reject.action}>{reject.text}</Button>}
-        </FlexBoxRow>
+        {accept || reject ? (
+          <FlexBoxRow style={{ padding: '16px' }}>
+            {accept && <Button onClick={accept.action}>{accept.text}</Button>}
+            {reject && <Button onClick={reject.action}>{reject.text}</Button>}
+          </FlexBoxRow>
+        ) : (
+          <div style={{ height: 16 }} />
+        )}
       </FlexBoxCol>
     </div>
   );

@@ -1,0 +1,23 @@
+fragment MainBox on Box {
+  id
+  baitsLevel
+  baitsLevelUpdateTonCost
+  baitsLevelUpdateCoinsCost
+  baitsLevelUpdateForCoinsPossible
+  equipmentLevel
+  equipmentLevelUpdateForCoinsPossible
+  equipmentLevelUpdateTonCost
+  equipmentLevelUpdateCoinsCost
+}
+
+query TackleBox ($boxId: String!) {
+  tackleBox (boxId: $boxId) {
+    ...MainBox
+  }
+}
+
+mutation UpgradeBox($boxId: ID!, $boxItemType: BoxItemType!) {
+  upgradeBox(boxId: $boxId, boxItemType: $boxItemType) {
+    ...MainBox
+  }
+}

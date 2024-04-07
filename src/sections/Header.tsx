@@ -1,6 +1,8 @@
 import Styled, { FlexBoxRow } from '../components/styled/styled';
 import { TonConnectButton } from '@tonconnect/ui-react';
 import { useTonConnect } from '../hooks/useTonConnect';
+import Coins from '../components/Coins';
+import { CoinType } from '../types/CoinType';
 
 export function Header({ coins }: { coins: number }) {
   const { network } = useTonConnect();
@@ -15,14 +17,8 @@ export function Header({ coins }: { coins: number }) {
                 : "N/A"}
             </Button>*/}
       <FlexBoxRow>
-        <div style={{ display: 'flex', alignItems: 'center', marginRight: 8 }}>
-          <img style={{ marginRight: 8, height: 25, width: 25 }} src="/img/coin.png" alt="" />
-          <span style={{ color: '#fff', fontWeight: 500 }}>{coins}</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <img style={{ marginRight: 8, height: 25, width: 25 }} src="/img/currency.png" alt="" />
-          <span style={{ color: '#fff', fontWeight: 500 }}>25</span>
-        </div>
+        <Coins coins={coins} type={CoinType.COIN} />
+        <Coins coins={0} type={CoinType.TON} />
       </FlexBoxRow>
       <TonConnectButton />
     </Styled.Header>

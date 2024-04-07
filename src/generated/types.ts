@@ -13,24 +13,54 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Box = {
+  __typename?: 'Box';
+  baitsLevel: Scalars['Float'];
+  baitsLevelUpdateCoinsCost: Scalars['Float'];
+  baitsLevelUpdateForCoinsPossible: Scalars['Boolean'];
+  baitsLevelUpdateTonCost: Scalars['Float'];
+  createdAt: Scalars['Float'];
+  equipmentLevel: Scalars['Float'];
+  equipmentLevelUpdateCoinsCost: Scalars['Float'];
+  equipmentLevelUpdateForCoinsPossible: Scalars['Boolean'];
+  equipmentLevelUpdateTonCost: Scalars['Float'];
+  id: Scalars['ID'];
+  updatedAt: Scalars['Float'];
+  user?: Maybe<User>;
+  userId: Scalars['String'];
+};
+
+export enum BoxItemType {
+  Baits = 'BAITS',
+  Equipment = 'EQUIPMENT',
+}
+
 export type Fish = {
   __typename?: 'Fish';
   createdAt: Scalars['Float'];
   deletedAt: Scalars['Float'];
   id: Scalars['Float'];
+  minBaitsLevel: Scalars['Float'];
   name: Scalars['String'];
   picture: Scalars['String'];
+  power: Scalars['Float'];
   price: Scalars['Float'];
   updatedAt: Scalars['Float'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  sellFish: Scalars['Boolean'];
+  sellFish: Scalars['Float'];
+  upgradeBox: Box;
 };
 
 export type MutationSellFishArgs = {
   fishId: Scalars['Float'];
+};
+
+export type MutationUpgradeBoxArgs = {
+  boxId: Scalars['ID'];
+  boxItemType: BoxItemType;
 };
 
 export type Query = {
@@ -38,10 +68,15 @@ export type Query = {
   catchFish: Fish;
   login: User;
   releaseNotesV2?: Maybe<Scalars['String']>;
+  tackleBox: Box;
 };
 
 export type QueryReleaseNotesV2Args = {
   input: Scalars['String'];
+};
+
+export type QueryTackleBoxArgs = {
+  boxId: Scalars['String'];
 };
 
 export type Subscription = {
@@ -59,6 +94,8 @@ export type User = {
   language_code: Scalars['String'];
   lastLoginDate: Scalars['DateTime'];
   last_name: Scalars['String'];
+  tackleBox?: Maybe<Box>;
+  tackleBoxId: Scalars['String'];
   telegramId: Scalars['Float'];
   updatedAt: Scalars['Float'];
   username: Scalars['String'];
