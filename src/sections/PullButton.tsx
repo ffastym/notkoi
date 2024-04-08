@@ -18,7 +18,6 @@ export function PullButton({ onPull, onPush }: PullButtonProps) {
         border: '2px solid #fff',
         height: 75,
         width: 75,
-        userSelect: 'none',
       }}
     >
       <img style={{ height: 45, width: 45 }} src="/img/reels-2-white.png" alt="" />
