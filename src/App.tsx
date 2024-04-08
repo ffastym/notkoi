@@ -20,6 +20,7 @@ import {
   useSellFishMutation,
 } from './App.operations.generated';
 import { client } from './config/apollo';
+import { FishGone } from './sections/FishGone';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -45,6 +46,7 @@ function App({ user }: { user: LoginDataFragment }) {
   const [isTackleBoxVisible, setIsTackleBoxVisible] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
   const [isProfiledVisible, setIsProfileVisible] = useState(false);
+  const [isFishGoneVisible, setIsFishGoneVisible] = useState(false);
   const [bitingPower, setBitingPower] = useState(0);
 
   const { data: bitingData } = useBitingSubscription({
@@ -83,7 +85,9 @@ function App({ user }: { user: LoginDataFragment }) {
           return 1;
         }
 
-        if (prevLoadingPercent === 100) {
+        if (prevLoadingPercent >= 100) {
+          showFishGone();
+          resetToDefault();
           return 100;
         }
 
@@ -113,7 +117,9 @@ function App({ user }: { user: LoginDataFragment }) {
           return 1;
         }
 
-        if (prev === 0) {
+        if (prev <= 0) {
+          showFishGone();
+          resetToDefault();
           return 0;
         }
 
@@ -161,6 +167,14 @@ function App({ user }: { user: LoginDataFragment }) {
 
   const hideLeaderboard = () => {
     setIsLeaderboardVisible(false);
+  };
+
+  const showFishGone = () => {
+    setIsFishGoneVisible(true);
+  };
+
+  const hideFishGone = () => {
+    setIsFishGoneVisible(false);
   };
 
   const showProfile = () => {
@@ -243,6 +257,7 @@ function App({ user }: { user: LoginDataFragment }) {
         )}
         <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} tackleBoxId={user.tackleBoxId} />
         <Leaderboard isVisible={isLeaderboardVisible} hide={hideLeaderboard} />
+        <FishGone isVisible={isFishGoneVisible} hide={hideFishGone} />
         <Profile hide={hideProfile} isVisible={isProfiledVisible} />
       </AppContainer>
     </StyledApp>

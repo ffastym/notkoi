@@ -8,8 +8,7 @@ export const urlGraphQLSubscriptions = import.meta.env.VITE_BASE_URL_GRAPHQL_SUB
 
 export const authorization =
   import.meta.env.MODE === 'production'
-    ? // @ts-expect-error ssdf
-      window?.Telegram?.WebApp?.initData
+    ? window?.Telegram?.WebApp?.initData
     : import.meta.env.VITE_TELEGRAM_INIT_DATA || '';
 
 const defaultMergeOptions: FieldPolicy<any> = {
