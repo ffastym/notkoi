@@ -1,5 +1,8 @@
-subscription newChatMessage {
-  newChatMessage
+subscription Biting {
+  biting {
+    id
+    power
+  }
 }
 
 fragment LoginData on User {
@@ -21,8 +24,8 @@ fragment CatchedFish on Fish {
   picture
 }
 
-query CatchFish {
-  catchFish {
+query CatchFish ($bitingId: ID!) {
+  catchFish (bitingId: $bitingId) {
     ...CatchedFish
   }
 }

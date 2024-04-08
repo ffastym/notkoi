@@ -3,9 +3,12 @@ import * as Types from './generated/types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
-export type NewChatMessageSubscriptionVariables = Types.Exact<{ [key: string]: never }>;
+export type BitingSubscriptionVariables = Types.Exact<{ [key: string]: never }>;
 
-export type NewChatMessageSubscription = { __typename?: 'Subscription'; newChatMessage: number };
+export type BitingSubscription = {
+  __typename?: 'Subscription';
+  biting: { __typename?: 'Biting'; id: string; power: number };
+};
 
 export type LoginDataFragment = { __typename?: 'User'; id: string; coins: number; tackleBoxId: string };
 
@@ -18,7 +21,9 @@ export type LoginQuery = {
 
 export type CatchedFishFragment = { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
 
-export type CatchFishQueryVariables = Types.Exact<{ [key: string]: never }>;
+export type CatchFishQueryVariables = Types.Exact<{
+  bitingId: Types.Scalars['ID'];
+}>;
 
 export type CatchFishQuery = {
   __typename?: 'Query';
@@ -46,38 +51,38 @@ export const CatchedFishFragmentDoc = gql`
     picture
   }
 `;
-export const NewChatMessageDocument = gql`
-  subscription newChatMessage {
-    newChatMessage
+export const BitingDocument = gql`
+  subscription Biting {
+    biting {
+      id
+      power
+    }
   }
 `;
 
 /**
- * __useNewChatMessageSubscription__
+ * __useBitingSubscription__
  *
- * To run a query within a React component, call `useNewChatMessageSubscription` and pass it any options that fit your needs.
- * When your component renders, `useNewChatMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useBitingSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useBitingSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useNewChatMessageSubscription({
+ * const { data, loading, error } = useBitingSubscription({
  *   variables: {
  *   },
  * });
  */
-export function useNewChatMessageSubscription(
-  baseOptions?: Apollo.SubscriptionHookOptions<NewChatMessageSubscription, NewChatMessageSubscriptionVariables>,
+export function useBitingSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<BitingSubscription, BitingSubscriptionVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useSubscription<NewChatMessageSubscription, NewChatMessageSubscriptionVariables>(
-    NewChatMessageDocument,
-    options,
-  );
+  return Apollo.useSubscription<BitingSubscription, BitingSubscriptionVariables>(BitingDocument, options);
 }
-export type NewChatMessageSubscriptionHookResult = ReturnType<typeof useNewChatMessageSubscription>;
-export type NewChatMessageSubscriptionResult = Apollo.SubscriptionResult<NewChatMessageSubscription>;
+export type BitingSubscriptionHookResult = ReturnType<typeof useBitingSubscription>;
+export type BitingSubscriptionResult = Apollo.SubscriptionResult<BitingSubscription>;
 export const LoginDocument = gql`
   query Login {
     login {
@@ -114,8 +119,8 @@ export type LoginQueryHookResult = ReturnType<typeof useLoginQuery>;
 export type LoginLazyQueryHookResult = ReturnType<typeof useLoginLazyQuery>;
 export type LoginQueryResult = Apollo.QueryResult<LoginQuery, LoginQueryVariables>;
 export const CatchFishDocument = gql`
-  query CatchFish {
-    catchFish {
+  query CatchFish($bitingId: ID!) {
+    catchFish(bitingId: $bitingId) {
       ...CatchedFish
     }
   }
@@ -134,10 +139,11 @@ export const CatchFishDocument = gql`
  * @example
  * const { data, loading, error } = useCatchFishQuery({
  *   variables: {
+ *      bitingId: // value for 'bitingId'
  *   },
  * });
  */
-export function useCatchFishQuery(baseOptions?: Apollo.QueryHookOptions<CatchFishQuery, CatchFishQueryVariables>) {
+export function useCatchFishQuery(baseOptions: Apollo.QueryHookOptions<CatchFishQuery, CatchFishQueryVariables>) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<CatchFishQuery, CatchFishQueryVariables>(CatchFishDocument, options);
 }

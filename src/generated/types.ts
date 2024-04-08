@@ -13,6 +13,19 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Biting = {
+  __typename?: 'Biting';
+  createdAt: Scalars['Float'];
+  deletedAt: Scalars['Float'];
+  fish: Fish;
+  fishId: Scalars['String'];
+  id: Scalars['ID'];
+  power: Scalars['Float'];
+  updatedAt: Scalars['Float'];
+  user: User;
+  userId: Scalars['String'];
+};
+
 export type Box = {
   __typename?: 'Box';
   baitsLevel: Scalars['Float'];
@@ -67,12 +80,11 @@ export type Query = {
   __typename?: 'Query';
   catchFish: Fish;
   login: User;
-  releaseNotesV2?: Maybe<Scalars['String']>;
   tackleBox: Box;
 };
 
-export type QueryReleaseNotesV2Args = {
-  input: Scalars['String'];
+export type QueryCatchFishArgs = {
+  bitingId: Scalars['ID'];
 };
 
 export type QueryTackleBoxArgs = {
@@ -81,7 +93,7 @@ export type QueryTackleBoxArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  newChatMessage: Scalars['Float'];
+  biting: Biting;
 };
 
 export type User = {

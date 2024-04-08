@@ -15,8 +15,8 @@ import { PullButton } from './sections/PullButton';
 import {
   LoginDataFragment,
   LoginDataFragmentDoc,
+  useBitingSubscription,
   useCatchFishLazyQuery,
-  useNewChatMessageSubscription,
   useSellFishMutation,
 } from './App.operations.generated';
 import { client } from './config/apollo';
@@ -43,12 +43,11 @@ function App({ user }: { user: LoginDataFragment }) {
   const [loadingPercent, setLoadingPercent] = useState<number | null>(null);
   const [isLandingNetVisible, setIsLandingNetVisible] = useState(false);
   const [isTackleBoxVisible, setIsTackleBoxVisible] = useState(false);
-  const [isBaitsBoxVisible, setIsBaitsBoxVisible] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
   const [isProfiledVisible, setIsProfileVisible] = useState(false);
-  const [isBiting, setIsBiting] = useState(false);
+  const [bitingPower, setBitingPower] = useState(0);
 
-  const { data } = useNewChatMessageSubscription({
+  const { data: bitingData } = useBitingSubscription({
     shouldResubscribe: true,
     fetchPolicy: 'no-cache',
   });
@@ -64,11 +63,11 @@ function App({ user }: { user: LoginDataFragment }) {
     setBaitTopPosition(defaultBaitPosition[1]);
     setBaitLeftPosition(defaultBaitPosition[0]);
     setLoadingPercent(null);
-    setIsBiting(false);
+    setBitingPower(0);
   };
 
   const incLoad = () => {
-    if (!isBiting) {
+    if (!bitingPower) {
       return;
     }
 
@@ -92,13 +91,13 @@ function App({ user }: { user: LoginDataFragment }) {
           setBaitTopPosition((prevBaitTopPosition) => prevBaitTopPosition - PULLING_SPEED);
         }
 
-        return prevLoadingPercent + 1;
+        return prevLoadingPercent + bitingPower;
       });
     }, 50);
   };
 
   const decLoad = () => {
-    if (!isBiting) {
+    if (!bitingPower) {
       return;
     }
 
@@ -122,7 +121,7 @@ function App({ user }: { user: LoginDataFragment }) {
           setBaitTopPosition((prev) => prev + 0.05);
         }
 
-        return prev - 1;
+        return prev - bitingPower;
       });
     }, 50);
   };
@@ -156,14 +155,6 @@ function App({ user }: { user: LoginDataFragment }) {
     setIsTackleBoxVisible(false);
   };
 
-  const showBaitsBox = () => {
-    setIsBaitsBoxVisible(true);
-  };
-
-  const hideBaitsBox = () => {
-    setIsBaitsBoxVisible(false);
-  };
-
   const showLeaderboard = () => {
     setIsLeaderboardVisible(true);
   };
@@ -181,23 +172,23 @@ function App({ user }: { user: LoginDataFragment }) {
   };
 
   useEffect(() => {
-    if (baitTopPosition <= 0) {
-      catchFish().then(() => {
+    if (baitTopPosition <= 0 && bitingData?.biting) {
+      catchFish({ variables: { bitingId: bitingData.biting.id } }).then(() => {
         showLandingNet();
         resetToDefault();
       });
     }
-  }, [baitTopPosition, catchFish]);
+  }, [baitTopPosition, bitingData?.biting, catchFish]);
 
   useEffect(() => {
-    if (data?.newChatMessage) {
-      setIsBiting(true);
+    if (bitingData?.biting) {
+      setBitingPower(bitingData.biting.power);
 
       if (!moving) {
         moving = setInterval(changeBaitLeftPosition, 50);
       }
     }
-  }, [data]);
+  }, [bitingData]);
 
   const updateCoins = (coins: number) => {
     client.cache.updateFragment(
@@ -229,7 +220,7 @@ function App({ user }: { user: LoginDataFragment }) {
         {loadingPercent !== null && <ProgressBar percent={100 - loadingPercent} />}
         <BaitImg style={{ bottom: `${baitTopPosition}%`, left: `${baitLeftPosition}%` }} />
         <Rod />
-        {isBiting && (
+        {bitingPower > 0 && (
           <h1 style={{ color: 'white', position: 'absolute', top: 100, left: '50%', transform: 'translateX(-50%' }}>
             BITING!!!
           </h1>
