@@ -1,4 +1,6 @@
-type PullButtonProps = { onPull: () => void; onPush: () => void };
+import { TouchEventHandler } from 'react';
+
+type PullButtonProps = { onPull: TouchEventHandler; onPush: TouchEventHandler };
 
 export function PullButton({ onPull, onPush }: PullButtonProps) {
   return (

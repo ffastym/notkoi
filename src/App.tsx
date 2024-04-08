@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BaitImg, Rod } from './components/styled/styled';
 import '@twa-dev/sdk';
 import { Lake } from './components/Lake';
-import { useEffect, useState } from 'react';
+import { TouchEventHandler, useEffect, useState } from 'react';
 import { ProgressBar } from './components/ProgressBar';
 import { Profile } from './sections/Profile';
 import { Leaderboard } from './sections/Leaderboard';
@@ -68,7 +68,9 @@ function App({ user }: { user: LoginDataFragment }) {
     setBitingPower(0);
   };
 
-  const incLoad = () => {
+  const incLoad: TouchEventHandler = (e) => {
+    e.preventDefault();
+
     if (!bitingPower) {
       return;
     }
@@ -100,7 +102,9 @@ function App({ user }: { user: LoginDataFragment }) {
     }, 50);
   };
 
-  const decLoad = () => {
+  const decLoad: TouchEventHandler = (e) => {
+    e.preventDefault();
+
     if (!bitingPower) {
       return;
     }
