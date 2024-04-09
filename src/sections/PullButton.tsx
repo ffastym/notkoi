@@ -18,11 +18,11 @@ export function PullButton({ onPull, onPush }: PullButtonProps) {
         bottom: 100,
         background: 'rgba(255,255,255,.3)',
         border: '2px solid #fff',
-        height: 75,
-        width: 75,
+        height: 100,
+        width: 100,
       }}
     >
-      <img style={{ height: 45, width: 45 }} src="/img/reels-2-white.png" alt="" />
+      <img style={{ height: 50, width: 50 }} src="/img/reels-2-white.png" alt="" />
     </button>
   );
 }

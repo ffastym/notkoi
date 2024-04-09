@@ -201,6 +201,7 @@ function App({ user }: { user: LoginDataFragment }) {
   useEffect(() => {
     if (bitingData?.biting) {
       setBitingPower(bitingData.biting.power);
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
 
       if (!moving) {
         moving = setInterval(changeBaitLeftPosition, 50);
@@ -250,7 +251,7 @@ function App({ user }: { user: LoginDataFragment }) {
             { picture: '/img/fisher.png', action: showProfile },
           ]}
         />
-        <PullButton onPull={incLoad} onPush={decLoad} />
+        {bitingPower > 0 && <PullButton onPull={incLoad} onPush={decLoad} />}
         {catchFishData && (
           <LandingNet
             hide={hideLandingNet}
