@@ -12,12 +12,24 @@ export type BitingSubscription = {
 
 export type LoginDataFragment = { __typename?: 'User'; id: string; coins: number; tackleBoxId: string };
 
-export type LoginQueryVariables = Types.Exact<{ [key: string]: never }>;
+export type UserProfileFragment = { __typename?: 'User'; id: string; referralCode: string };
+
+export type LoginQueryVariables = Types.Exact<{
+  referralCode?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
 
 export type LoginQuery = {
   __typename?: 'Query';
   login: { __typename?: 'User'; id: string; coins: number; tackleBoxId: string };
 };
+
+export type UserQueryVariables = Types.Exact<{ [key: string]: never }>;
+
+export type UserQuery = { __typename?: 'Query'; user: { __typename?: 'User'; id: string; referralCode: string } };
+
+export type ReferFriendMutationVariables = Types.Exact<{ [key: string]: never }>;
+
+export type ReferFriendMutation = { __typename?: 'Mutation'; referFriend: boolean };
 
 export type CatchedFishFragment = { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
 
@@ -41,6 +53,12 @@ export const LoginDataFragmentDoc = gql`
     id
     coins
     tackleBoxId
+  }
+`;
+export const UserProfileFragmentDoc = gql`
+  fragment UserProfile on User {
+    id
+    referralCode
   }
 `;
 export const CatchedFishFragmentDoc = gql`
@@ -84,8 +102,8 @@ export function useBitingSubscription(
 export type BitingSubscriptionHookResult = ReturnType<typeof useBitingSubscription>;
 export type BitingSubscriptionResult = Apollo.SubscriptionResult<BitingSubscription>;
 export const LoginDocument = gql`
-  query Login {
-    login {
+  query Login($referralCode: String) {
+    login(referralCode: $referralCode) {
       ...LoginData
     }
   }
@@ -104,6 +122,7 @@ export const LoginDocument = gql`
  * @example
  * const { data, loading, error } = useLoginQuery({
  *   variables: {
+ *      referralCode: // value for 'referralCode'
  *   },
  * });
  */
@@ -118,6 +137,73 @@ export function useLoginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Logi
 export type LoginQueryHookResult = ReturnType<typeof useLoginQuery>;
 export type LoginLazyQueryHookResult = ReturnType<typeof useLoginLazyQuery>;
 export type LoginQueryResult = Apollo.QueryResult<LoginQuery, LoginQueryVariables>;
+export const UserDocument = gql`
+  query User {
+    user {
+      ...UserProfile
+    }
+  }
+  ${UserProfileFragmentDoc}
+`;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions?: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+}
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+}
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export const ReferFriendDocument = gql`
+  mutation ReferFriend {
+    referFriend
+  }
+`;
+export type ReferFriendMutationFn = Apollo.MutationFunction<ReferFriendMutation, ReferFriendMutationVariables>;
+
+/**
+ * __useReferFriendMutation__
+ *
+ * To run a mutation, you first call `useReferFriendMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReferFriendMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [referFriendMutation, { data, loading, error }] = useReferFriendMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useReferFriendMutation(
+  baseOptions?: Apollo.MutationHookOptions<ReferFriendMutation, ReferFriendMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ReferFriendMutation, ReferFriendMutationVariables>(ReferFriendDocument, options);
+}
+export type ReferFriendMutationHookResult = ReturnType<typeof useReferFriendMutation>;
+export type ReferFriendMutationResult = Apollo.MutationResult<ReferFriendMutation>;
+export type ReferFriendMutationOptions = Apollo.BaseMutationOptions<ReferFriendMutation, ReferFriendMutationVariables>;
 export const CatchFishDocument = gql`
   query CatchFish($bitingId: ID!) {
     catchFish(bitingId: $bitingId) {

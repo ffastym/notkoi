@@ -11,10 +11,25 @@ fragment LoginData on User {
   tackleBoxId
 }
 
-query Login {
-  login {
+fragment UserProfile on User {
+  id
+  referralCode
+}
+
+query Login ($referralCode: String) {
+  login (referralCode: $referralCode) {
     ...LoginData
   }
+}
+
+query User {
+  user {
+    ...UserProfile
+  }
+}
+
+mutation ReferFriend {
+  referFriend
 }
 
 fragment CatchedFish on Fish {

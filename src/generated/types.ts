@@ -63,6 +63,7 @@ export type Fish = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  referFriend: Scalars['Boolean'];
   sellFish: Scalars['Float'];
   upgradeBox: Box;
 };
@@ -81,10 +82,15 @@ export type Query = {
   catchFish: Fish;
   login: User;
   tackleBox: Box;
+  user: User;
 };
 
 export type QueryCatchFishArgs = {
   bitingId: Scalars['ID'];
+};
+
+export type QueryLoginArgs = {
+  referralCode?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryTackleBoxArgs = {
@@ -106,6 +112,7 @@ export type User = {
   language_code: Scalars['String'];
   lastLoginDate: Scalars['DateTime'];
   last_name: Scalars['String'];
+  referralCode: Scalars['String'];
   tackleBox?: Maybe<Box>;
   tackleBoxId: Scalars['String'];
   telegramId: Scalars['Float'];

@@ -46,6 +46,7 @@ const TackleBoxItem = ({
     const upgradedBox = await upgrade({ variables: { boxId, boxItemType } });
 
     if (upgradedBox.data) {
+      window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
       updateBox(upgradedBox.data?.upgradeBox);
     }
   };
