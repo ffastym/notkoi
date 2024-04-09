@@ -68,8 +68,12 @@ function App({ user }: { user: LoginDataFragment }) {
     setBitingPower(0);
   };
 
-  const incLoad: TouchEventHandler = (e) => {
+  const preventSelection: TouchEventHandler = (e) => {
     e.preventDefault();
+  };
+
+  const incLoad: TouchEventHandler = (e) => {
+    preventSelection(e);
 
     if (!bitingPower) {
       return;
@@ -104,7 +108,7 @@ function App({ user }: { user: LoginDataFragment }) {
   };
 
   const decLoad: TouchEventHandler = (e) => {
-    e.preventDefault();
+    preventSelection(e);
 
     if (!bitingPower) {
       return;
@@ -229,6 +233,7 @@ function App({ user }: { user: LoginDataFragment }) {
 
     if (data) {
       updateCoins(data.sellFish);
+      window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
     }
 
     hideLandingNet();
@@ -241,7 +246,7 @@ function App({ user }: { user: LoginDataFragment }) {
         <Header coins={user.coins} />
         {loadingPercent !== null && <ProgressBar percent={100 - loadingPercent} />}
         <BaitImg style={{ bottom: `${baitTopPosition}%`, left: `${baitLeftPosition}%` }} />
-        <Rod />
+        <Rod onTouchStart={preventSelection} onTouchEnd={preventSelection} />
         {bitingPower > 0 && (
           <h1 style={{ color: 'white', position: 'absolute', top: 100, left: '50%', transform: 'translateX(-50%' }}>
             BITING!!!
