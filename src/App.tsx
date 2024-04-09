@@ -82,6 +82,7 @@ function App({ user }: { user: LoginDataFragment }) {
     }
 
     loading = setInterval(() => {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
       setLoadingPercent((prevLoadingPercent) => {
         if (prevLoadingPercent === null) {
           return 1;
@@ -174,6 +175,7 @@ function App({ user }: { user: LoginDataFragment }) {
   };
 
   const showFishGone = () => {
+    window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
     setIsFishGoneVisible(true);
   };
 
@@ -192,6 +194,7 @@ function App({ user }: { user: LoginDataFragment }) {
   useEffect(() => {
     if (baitTopPosition <= 0 && bitingData?.biting) {
       catchFish({ variables: { bitingId: bitingData.biting.id } }).then(() => {
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
         showLandingNet();
         resetToDefault();
       });
@@ -201,7 +204,7 @@ function App({ user }: { user: LoginDataFragment }) {
   useEffect(() => {
     if (bitingData?.biting) {
       setBitingPower(bitingData.biting.power);
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
 
       if (!moving) {
         moving = setInterval(changeBaitLeftPosition, 50);
