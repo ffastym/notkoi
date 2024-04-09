@@ -33,7 +33,7 @@ const AppContainer = styled.div`
 
 let loading: any = null;
 let moving: any = null;
-const PULLING_SPEED = 0.3;
+const PULLING_SPEED = 0.5;
 // const PULLING_SPEED = 10;
 
 const defaultBaitPosition = [50, 35];
