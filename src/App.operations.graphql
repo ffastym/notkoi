@@ -16,8 +16,8 @@ fragment UserProfile on User {
   referralCode
 }
 
-query Login ($referralCode: String) {
-  login (referralCode: $referralCode) {
+query Login {
+  login {
     ...LoginData
   }
 }

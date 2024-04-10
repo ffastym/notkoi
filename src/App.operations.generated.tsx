@@ -14,9 +14,7 @@ export type LoginDataFragment = { __typename?: 'User'; id: string; coins: number
 
 export type UserProfileFragment = { __typename?: 'User'; id: string; referralCode: string };
 
-export type LoginQueryVariables = Types.Exact<{
-  referralCode?: Types.InputMaybe<Types.Scalars['String']>;
-}>;
+export type LoginQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type LoginQuery = {
   __typename?: 'Query';
@@ -102,8 +100,8 @@ export function useBitingSubscription(
 export type BitingSubscriptionHookResult = ReturnType<typeof useBitingSubscription>;
 export type BitingSubscriptionResult = Apollo.SubscriptionResult<BitingSubscription>;
 export const LoginDocument = gql`
-  query Login($referralCode: String) {
-    login(referralCode: $referralCode) {
+  query Login {
+    login {
       ...LoginData
     }
   }
@@ -122,7 +120,6 @@ export const LoginDocument = gql`
  * @example
  * const { data, loading, error } = useLoginQuery({
  *   variables: {
- *      referralCode: // value for 'referralCode'
  *   },
  * });
  */

@@ -89,10 +89,6 @@ export type QueryCatchFishArgs = {
   bitingId: Scalars['ID'];
 };
 
-export type QueryLoginArgs = {
-  referralCode?: InputMaybe<Scalars['String']>;
-};
-
 export type QueryTackleBoxArgs = {
   boxId: Scalars['String'];
 };
