@@ -1,8 +1,7 @@
 import './App.css';
 import styled from 'styled-components';
-import { BaitImg, Rod } from './components/styled/styled';
+import { BaitImg, LakePicture, Rod } from './components/styled/styled';
 import '@twa-dev/sdk';
-import { Lake } from './components/Lake';
 import { TouchEventHandler, useEffect, useState } from 'react';
 import { ProgressBar } from './components/ProgressBar';
 import { Profile } from './sections/Profile';
@@ -242,10 +241,14 @@ function App({ user }: { user: LoginDataFragment }) {
   return (
     <StyledApp>
       <AppContainer>
-        <Lake />
+        <LakePicture onTouchStart={preventSelection} onTouchEnd={preventSelection} />
         <Header coins={user.coins} />
         {loadingPercent !== null && <ProgressBar percent={100 - loadingPercent} />}
-        <BaitImg style={{ bottom: `${baitTopPosition}%`, left: `${baitLeftPosition}%` }} />
+        <BaitImg
+          onTouchStart={preventSelection}
+          onTouchEnd={preventSelection}
+          style={{ bottom: `${baitTopPosition}%`, left: `${baitLeftPosition}%` }}
+        />
         <Rod onTouchStart={preventSelection} onTouchEnd={preventSelection} />
         {bitingPower > 0 && (
           <h1 style={{ color: 'white', position: 'absolute', top: 100, left: '50%', transform: 'translateX(-50%' }}>
@@ -268,10 +271,12 @@ function App({ user }: { user: LoginDataFragment }) {
             fish={catchFishData.catchFish}
           />
         )}
-        <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} tackleBoxId={user.tackleBoxId} />
-        <Leaderboard isVisible={isLeaderboardVisible} hide={hideLeaderboard} />
+        {isTackleBoxVisible && (
+          <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} tackleBoxId={user.tackleBoxId} />
+        )}
+        {isLeaderboardVisible && <Leaderboard isVisible={isLeaderboardVisible} hide={hideLeaderboard} />}
         <FishGone isVisible={isFishGoneVisible} hide={hideFishGone} />
-        <Profile hide={hideProfile} isVisible={isProfiledVisible} />
+        {isProfiledVisible && <Profile hide={hideProfile} isVisible={isProfiledVisible} />}
       </AppContainer>
     </StyledApp>
   );

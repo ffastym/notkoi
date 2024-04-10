@@ -9,7 +9,7 @@ import { BoxItemType } from '../../generated/types';
 type TackleBoxProps = DialogProps & Pick<LoginDataFragment, 'tackleBoxId'>;
 
 function TackleBox({ isVisible, hide, tackleBoxId }: TackleBoxProps) {
-  const { data, loading } = useTackleBoxQuery({ fetchPolicy: 'network-only', variables: { boxId: tackleBoxId } });
+  const { data, loading } = useTackleBoxQuery({ fetchPolicy: 'cache-and-network', variables: { boxId: tackleBoxId } });
 
   const renderContent = () => {
     if (!data) {

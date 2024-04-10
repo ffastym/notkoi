@@ -13,7 +13,7 @@ export function Profile({ isVisible, hide }: DialogProps) {
   };
 
   const referralLink = useMemo(
-    () => `https://t.me/notkoi_bot/?start=${data?.user.referralCode}`,
+    () => `https://t.me/notkoi_bot/startapp=${data?.user.referralCode}`,
     [data?.user.referralCode],
   );
 
@@ -40,6 +40,7 @@ export function Profile({ isVisible, hide }: DialogProps) {
   return (
     <Overlay visible={isVisible} title={'Profile'} onClose={hide}>
       <FlexBoxCol>
+        <span>Invite a friends and earn coins for each referral</span>
         <span>Referral link: {referralLink}</span>
         <Button onClick={referFriend}>Refer a Friend</Button>
       </FlexBoxCol>
