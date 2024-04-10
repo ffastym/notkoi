@@ -9,7 +9,7 @@ export function Profile({ isVisible, hide }: DialogProps) {
 
   const referFriend = async () => {
     await referRequest({ fetchPolicy: 'no-cache' });
-    window.Telegram.WebApp.openTelegramLink('https://t.me/notkoi_bot');
+    window.Telegram.WebApp.close();
   };
 
   if (!data) {
