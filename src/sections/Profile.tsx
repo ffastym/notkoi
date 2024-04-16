@@ -19,7 +19,7 @@ export function Profile({ isVisible, hide }: DialogProps) {
   return (
     <Overlay visible={isVisible} title={'Profile'} onClose={hide}>
       <FlexBoxCol>
-        <span>Invite a friends and earn 20% from the cost of each their caught fish!</span>
+        <span>Invite a friends and earn 500 coins immediately and 20% from the cost of each their caught fish!</span>
         <span>Total friends: {friendsCountData?.friendsCount || 0}</span>
         <Button onClick={referFriend}>Refer a Friend</Button>
       </FlexBoxCol>
