@@ -80,6 +80,7 @@ export type MutationUpgradeBoxArgs = {
 export type Query = {
   __typename?: 'Query';
   catchFish: Fish;
+  friendsCount: Scalars['Float'];
   login: User;
   tackleBox: Box;
   user: User;

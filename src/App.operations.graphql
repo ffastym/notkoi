@@ -48,3 +48,7 @@ query CatchFish ($bitingId: ID!) {
 mutation SellFish ($fishId: Float!) {
   sellFish(fishId: $fishId)
 }
+
+query FriendsCount {
+  friendsCount
+}

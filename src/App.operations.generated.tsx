@@ -46,6 +46,10 @@ export type SellFishMutationVariables = Types.Exact<{
 
 export type SellFishMutation = { __typename?: 'Mutation'; sellFish: number };
 
+export type FriendsCountQueryVariables = Types.Exact<{ [key: string]: never }>;
+
+export type FriendsCountQuery = { __typename?: 'Query'; friendsCount: number };
+
 export const LoginDataFragmentDoc = gql`
   fragment LoginData on User {
     id
@@ -272,3 +276,39 @@ export function useSellFishMutation(
 export type SellFishMutationHookResult = ReturnType<typeof useSellFishMutation>;
 export type SellFishMutationResult = Apollo.MutationResult<SellFishMutation>;
 export type SellFishMutationOptions = Apollo.BaseMutationOptions<SellFishMutation, SellFishMutationVariables>;
+export const FriendsCountDocument = gql`
+  query FriendsCount {
+    friendsCount
+  }
+`;
+
+/**
+ * __useFriendsCountQuery__
+ *
+ * To run a query within a React component, call `useFriendsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFriendsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFriendsCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFriendsCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<FriendsCountQuery, FriendsCountQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FriendsCountQuery, FriendsCountQueryVariables>(FriendsCountDocument, options);
+}
+export function useFriendsCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FriendsCountQuery, FriendsCountQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FriendsCountQuery, FriendsCountQueryVariables>(FriendsCountDocument, options);
+}
+export type FriendsCountQueryHookResult = ReturnType<typeof useFriendsCountQuery>;
+export type FriendsCountLazyQueryHookResult = ReturnType<typeof useFriendsCountLazyQuery>;
+export type FriendsCountQueryResult = Apollo.QueryResult<FriendsCountQuery, FriendsCountQueryVariables>;
