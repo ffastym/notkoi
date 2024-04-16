@@ -31,20 +31,36 @@ export type ReferFriendMutation = { __typename?: 'Mutation'; referFriend: boolea
 
 export type CatchedFishFragment = { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
 
+export type BitingWithFishFragment = {
+  __typename?: 'Biting';
+  id: string;
+  fish: { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
+};
+
 export type CatchFishQueryVariables = Types.Exact<{
   bitingId: Types.Scalars['ID'];
 }>;
 
 export type CatchFishQuery = {
   __typename?: 'Query';
-  catchFish: { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
+  catchFish: {
+    __typename?: 'Biting';
+    id: string;
+    fish: { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
+  };
 };
 
 export type SellFishMutationVariables = Types.Exact<{
-  fishId: Types.Scalars['Float'];
+  bitingId: Types.Scalars['ID'];
 }>;
 
 export type SellFishMutation = { __typename?: 'Mutation'; sellFish: number };
+
+export type ReleaseFishMutationVariables = Types.Exact<{
+  bitingId: Types.Scalars['ID'];
+}>;
+
+export type ReleaseFishMutation = { __typename?: 'Mutation'; releaseFish: boolean };
 
 export type FriendsCountQueryVariables = Types.Exact<{ [key: string]: never }>;
 
@@ -70,6 +86,15 @@ export const CatchedFishFragmentDoc = gql`
     price
     picture
   }
+`;
+export const BitingWithFishFragmentDoc = gql`
+  fragment BitingWithFish on Biting {
+    id
+    fish {
+      ...CatchedFish
+    }
+  }
+  ${CatchedFishFragmentDoc}
 `;
 export const BitingDocument = gql`
   subscription Biting {
@@ -208,10 +233,10 @@ export type ReferFriendMutationOptions = Apollo.BaseMutationOptions<ReferFriendM
 export const CatchFishDocument = gql`
   query CatchFish($bitingId: ID!) {
     catchFish(bitingId: $bitingId) {
-      ...CatchedFish
+      ...BitingWithFish
     }
   }
-  ${CatchedFishFragmentDoc}
+  ${BitingWithFishFragmentDoc}
 `;
 
 /**
@@ -244,8 +269,8 @@ export type CatchFishQueryHookResult = ReturnType<typeof useCatchFishQuery>;
 export type CatchFishLazyQueryHookResult = ReturnType<typeof useCatchFishLazyQuery>;
 export type CatchFishQueryResult = Apollo.QueryResult<CatchFishQuery, CatchFishQueryVariables>;
 export const SellFishDocument = gql`
-  mutation SellFish($fishId: Float!) {
-    sellFish(fishId: $fishId)
+  mutation SellFish($bitingId: ID!) {
+    sellFish(bitingId: $bitingId)
   }
 `;
 export type SellFishMutationFn = Apollo.MutationFunction<SellFishMutation, SellFishMutationVariables>;
@@ -263,7 +288,7 @@ export type SellFishMutationFn = Apollo.MutationFunction<SellFishMutation, SellF
  * @example
  * const [sellFishMutation, { data, loading, error }] = useSellFishMutation({
  *   variables: {
- *      fishId: // value for 'fishId'
+ *      bitingId: // value for 'bitingId'
  *   },
  * });
  */
@@ -276,6 +301,39 @@ export function useSellFishMutation(
 export type SellFishMutationHookResult = ReturnType<typeof useSellFishMutation>;
 export type SellFishMutationResult = Apollo.MutationResult<SellFishMutation>;
 export type SellFishMutationOptions = Apollo.BaseMutationOptions<SellFishMutation, SellFishMutationVariables>;
+export const ReleaseFishDocument = gql`
+  mutation ReleaseFish($bitingId: ID!) {
+    releaseFish(bitingId: $bitingId)
+  }
+`;
+export type ReleaseFishMutationFn = Apollo.MutationFunction<ReleaseFishMutation, ReleaseFishMutationVariables>;
+
+/**
+ * __useReleaseFishMutation__
+ *
+ * To run a mutation, you first call `useReleaseFishMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReleaseFishMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [releaseFishMutation, { data, loading, error }] = useReleaseFishMutation({
+ *   variables: {
+ *      bitingId: // value for 'bitingId'
+ *   },
+ * });
+ */
+export function useReleaseFishMutation(
+  baseOptions?: Apollo.MutationHookOptions<ReleaseFishMutation, ReleaseFishMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ReleaseFishMutation, ReleaseFishMutationVariables>(ReleaseFishDocument, options);
+}
+export type ReleaseFishMutationHookResult = ReturnType<typeof useReleaseFishMutation>;
+export type ReleaseFishMutationResult = Apollo.MutationResult<ReleaseFishMutation>;
+export type ReleaseFishMutationOptions = Apollo.BaseMutationOptions<ReleaseFishMutation, ReleaseFishMutationVariables>;
 export const FriendsCountDocument = gql`
   query FriendsCount {
     friendsCount

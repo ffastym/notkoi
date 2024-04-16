@@ -16,6 +16,7 @@ import {
   LoginDataFragmentDoc,
   useBitingSubscription,
   useCatchFishLazyQuery,
+  useReleaseFishMutation,
   useSellFishMutation,
 } from './App.operations.generated';
 import { client } from './config/apollo';
@@ -55,6 +56,7 @@ function App({ user }: { user: LoginDataFragment }) {
 
   const [catchFish, { data: catchFishData }] = useCatchFishLazyQuery({ fetchPolicy: 'no-cache' });
   const [sell] = useSellFishMutation({ fetchPolicy: 'no-cache' });
+  const [release] = useReleaseFishMutation({ fetchPolicy: 'no-cache' });
 
   const resetToDefault = () => {
     clearInterval(loading);
@@ -227,11 +229,21 @@ function App({ user }: { user: LoginDataFragment }) {
     );
   };
 
-  const sellFish = async (fishId: number) => {
-    const { data } = await sell({ variables: { fishId } });
+  const sellFish = async (bitingId: string) => {
+    const { data } = await sell({ variables: { bitingId } });
 
     if (data) {
       updateCoins(data.sellFish);
+      window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+    }
+
+    hideLandingNet();
+  };
+
+  const releaseFish = async (bitingId: string) => {
+    const { data } = await release({ variables: { bitingId } });
+
+    if (data) {
       window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
     }
 
@@ -268,7 +280,8 @@ function App({ user }: { user: LoginDataFragment }) {
             hide={hideLandingNet}
             isVisible={isLandingNetVisible}
             sell={sellFish}
-            fish={catchFishData.catchFish}
+            release={releaseFish}
+            biting={catchFishData.catchFish}
           />
         )}
         {isTackleBoxVisible && (

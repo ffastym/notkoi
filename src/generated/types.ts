@@ -21,10 +21,17 @@ export type Biting = {
   fishId: Scalars['String'];
   id: Scalars['ID'];
   power: Scalars['Float'];
+  status: BitingStatus;
   updatedAt: Scalars['Float'];
   user: User;
   userId: Scalars['String'];
 };
+
+export enum BitingStatus {
+  Missed = 'MISSED',
+  Released = 'RELEASED',
+  Sold = 'SOLD',
+}
 
 export type Box = {
   __typename?: 'Box';
@@ -64,12 +71,17 @@ export type Fish = {
 export type Mutation = {
   __typename?: 'Mutation';
   referFriend: Scalars['Boolean'];
+  releaseFish: Scalars['Boolean'];
   sellFish: Scalars['Float'];
   upgradeBox: Box;
 };
 
+export type MutationReleaseFishArgs = {
+  bitingId: Scalars['ID'];
+};
+
 export type MutationSellFishArgs = {
-  fishId: Scalars['Float'];
+  bitingId: Scalars['ID'];
 };
 
 export type MutationUpgradeBoxArgs = {
@@ -79,7 +91,7 @@ export type MutationUpgradeBoxArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  catchFish: Fish;
+  catchFish: Biting;
   friendsCount: Scalars['Float'];
   login: User;
   tackleBox: Box;

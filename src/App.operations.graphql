@@ -39,14 +39,25 @@ fragment CatchedFish on Fish {
   picture
 }
 
-query CatchFish ($bitingId: ID!) {
-  catchFish (bitingId: $bitingId) {
+fragment BitingWithFish on Biting {
+  id
+  fish {
     ...CatchedFish
   }
 }
 
-mutation SellFish ($fishId: Float!) {
-  sellFish(fishId: $fishId)
+query CatchFish ($bitingId: ID!) {
+  catchFish (bitingId: $bitingId) {
+    ...BitingWithFish
+  }
+}
+
+mutation SellFish ($bitingId: ID!) {
+  sellFish(bitingId: $bitingId)
+}
+
+mutation ReleaseFish ($bitingId: ID!) {
+  releaseFish(bitingId: $bitingId)
 }
 
 query FriendsCount {
