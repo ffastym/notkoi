@@ -22,7 +22,8 @@ import {
 import { client } from '../../config/apollo';
 import { FishGone } from '../../sections/FishGone';
 import { useTelegram } from '../../hooks/useTelegram';
-import { Friends } from '../../sections/Friends';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute, getRouteWithSlash } from '../../types/AppRoute';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -42,12 +43,12 @@ const defaultBaitPosition = [50, 35];
 
 function Home({ user }: { user: LoginDataFragment }) {
   const { tg } = useTelegram();
+  const navigate = useNavigate();
   const [baitTopPosition, setBaitTopPosition] = useState(defaultBaitPosition[1]);
   const [baitLeftPosition, setBaitLeftPosition] = useState(defaultBaitPosition[0]);
   const [loadingPercent, setLoadingPercent] = useState<number | null>(null);
   const [isLandingNetVisible, setIsLandingNetVisible] = useState(false);
   const [isTackleBoxVisible, setIsTackleBoxVisible] = useState(false);
-  const [isFriendsVisible, setIsFriendsVisible] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
   const [isProfiledVisible, setIsProfileVisible] = useState(false);
   const [isFishGoneVisible, setIsFishGoneVisible] = useState(false);
@@ -176,11 +177,7 @@ function Home({ user }: { user: LoginDataFragment }) {
   };
 
   const showFriends = () => {
-    setIsFriendsVisible(true);
-  };
-
-  const hideFriends = () => {
-    setIsFriendsVisible(false);
+    navigate(getRouteWithSlash(AppRoute.FRIENDS));
   };
 
   const showLeaderboard = () => {
@@ -304,7 +301,6 @@ function Home({ user }: { user: LoginDataFragment }) {
         {isTackleBoxVisible && (
           <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} tackleBoxId={user.tackleBoxId} />
         )}
-        {isFriendsVisible && <Friends isVisible={isFriendsVisible} hide={hideFriends} />}
         {isLeaderboardVisible && <Leaderboard isVisible={isLeaderboardVisible} hide={hideLeaderboard} />}
         <FishGone isVisible={isFishGoneVisible} hide={hideFishGone} />
         {isProfiledVisible && <Profile hide={hideProfile} isVisible={isProfiledVisible} />}

@@ -3,6 +3,7 @@ import { FC, lazy, ReactNode, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute, getRouteWithSlash } from './types/AppRoute';
 import { useLoginQuery } from './App.operations.generated';
+import Friends from './pages/Friends';
 
 const Home = lazy(() => import('./pages/Home'));
 
@@ -20,6 +21,7 @@ const App: FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path={getRouteWithSlash(AppRoute.HOME)} element={suspense(<Home user={data.login} />)} />
+        <Route path={getRouteWithSlash(AppRoute.FRIENDS)} element={suspense(<Friends />)} />
       </Routes>
     </BrowserRouter>
   );

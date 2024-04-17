@@ -43,6 +43,12 @@ export const Ellipsis = styled.div`
   white-space: nowrap;
 `;
 
+export const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+`;
+
 export const LakePicture = styled.div`
   background: url('/img/lake-1.jpg') no-repeat top;
   background-size: cover;
