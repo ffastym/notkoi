@@ -17,13 +17,19 @@ export function Overlay({ children, title, accept, reject, visible, onClose }: a
           transform: 'translate(-50%,-50%)',
           maxHeight: '500px',
           width: '80%',
-          background: '#FFF',
+          background: 'var(--tg-theme-secondary-bg-color)',
           borderRadius: '25px',
         }}
       >
         <div style={{ padding: '16px' }}>
           <span
-            style={{ fontSize: '20px', fontWeight: 'bold', color: '#000000', textAlign: 'center', display: 'block' }}
+            style={{
+              fontSize: '20px',
+              fontWeight: 'bold',
+              color: 'var(--tg-theme-text-color)',
+              textAlign: 'center',
+              display: 'block',
+            }}
           >
             {title}
             {onClose && <button className="close" onClick={onClose}></button>}

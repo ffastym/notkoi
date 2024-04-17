@@ -58,7 +58,7 @@ const TackleBoxItem = ({
         <img style={{ height: 40, width: 40, marginRight: 8 }} src={picture} alt="" />
         <FlexBoxCol>
           <span style={{ fontWeight: 'bold' }}>{name}</span>
-          <span style={{ color: 'grey' }}>Level {level}</span>
+          <span style={{ color: 'var(--tg-theme-hint-color)' }}>Level {level}</span>
         </FlexBoxCol>
       </FlexBoxRow>
       <FlexBoxRow>

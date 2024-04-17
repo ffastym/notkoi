@@ -40,7 +40,15 @@ function TackleBox({ isVisible, hide, tackleBoxId }: TackleBoxProps) {
           boxId={id}
           boxItemType={BoxItemType.Equipment}
         />
-        <div style={{ width: '100%', height: 1, background: '#efefef', margin: '8px 0' }} />
+        <div
+          style={{
+            width: '100%',
+            height: 1,
+            opacity: 0.1,
+            background: 'var(--tg-theme-text-color)',
+            margin: '8px 0',
+          }}
+        />
         <TackleBoxItem
           name={'Fishing baits'}
           coinsCost={baitsLevelUpdateCoinsCost}

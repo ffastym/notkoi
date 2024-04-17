@@ -1,14 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800,900&display=swap');
 
 :root {
-  --tg-theme-bg-color: #efeff3;
+  --tg-theme-bg-color: #ffffff;
+  --tg-theme-secondary-bg-color: #efeff3;
   --tg-theme-button-color: #2eaddc;
   --tg-theme-button-text-color: white;
-  --tg-theme-text-color: white;
+  --tg-theme-text-color: #000;
+  --tg-theme-hint-color: grey;
 }
 
 body {
-  background-color: var(--tg-theme-bg-color);
+  background-color: var(--tg-theme-secondary-bg-color);
   color: var(--tg-theme-text-color);
   font-size: 14px;
   margin: 0;
@@ -41,26 +43,31 @@ button {
 
 .close {
   position: absolute;
-  right: 24px;
-  top: 12px;
-  width: 16px;
-  height: 16px;
+  right: 8px;
+  top: 8px;
+  width: 40px;
+  height: 40px;
   opacity: 0.3;
 }
+
 .close:hover {
   opacity: 1;
 }
+
 .close:before, .close:after {
   position: absolute;
-  left: 15px;
+  left: 19px;
+  top: 12px;
   content: ' ';
   height: 17px;
   width: 2px;
-  background-color: #333;
+  background-color: var(--tg-theme-text-color);
 }
+
 .close:before {
   transform: rotate(45deg);
 }
+
 .close:after {
   transform: rotate(-45deg);
 }
