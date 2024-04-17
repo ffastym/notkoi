@@ -21,6 +21,7 @@ import {
 } from './App.operations.generated';
 import { client } from './config/apollo';
 import { FishGone } from './sections/FishGone';
+import { useTelegram } from './hooks/useTelegram';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -39,6 +40,7 @@ const PULLING_SPEED = 0.5;
 const defaultBaitPosition = [50, 35];
 
 function App({ user }: { user: LoginDataFragment }) {
+  const { tg } = useTelegram();
   const [baitTopPosition, setBaitTopPosition] = useState(defaultBaitPosition[1]);
   const [baitLeftPosition, setBaitLeftPosition] = useState(defaultBaitPosition[0]);
   const [loadingPercent, setLoadingPercent] = useState<number | null>(null);
@@ -249,6 +251,10 @@ function App({ user }: { user: LoginDataFragment }) {
 
     hideLandingNet();
   };
+
+  useEffect(() => {
+    tg.expand();
+  }, [tg]);
 
   return (
     <StyledApp>

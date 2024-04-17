@@ -4,6 +4,7 @@ import { CoinType } from '../../types/CoinType';
 import { MainBoxFragment, MainBoxFragmentDoc, useUpgradeBoxMutation } from './TackleBox.operations.generated';
 import { BoxItemType } from '../../generated/types';
 import { client } from '../../config/apollo';
+import { TON_CURRENCY_ENABLED } from '../../config';
 
 type TackleBoxItemProps = {
   name: string;
@@ -85,9 +86,11 @@ const TackleBoxItem = ({
             <Coins coins={coinsCost} type={CoinType.COIN} />
           </FlexBoxRow>
         </Button>
-        <Button style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-          <Coins coins={tonCost} type={CoinType.TON} />
-        </Button>
+        {TON_CURRENCY_ENABLED && (
+          <Button style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Coins coins={tonCost} type={CoinType.TON} />
+          </Button>
+        )}
       </FlexBoxRow>
     </FlexBoxCol>
   );

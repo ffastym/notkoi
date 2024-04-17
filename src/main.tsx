@@ -8,7 +8,7 @@ import { AppWrapper } from './AppWrapper';
 const manifestUrl = 'https://app.notkoi.site/tonconnect-manifest.json';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <TonConnectUIProvider manifestUrl={manifestUrl}>
+  <TonConnectUIProvider manifestUrl={manifestUrl} actionsConfiguration={{ twaReturnUrl: import.meta.env.VITE_TWA_URL }}>
     <ApolloProvider client={client}>
       <AppWrapper />
     </ApolloProvider>

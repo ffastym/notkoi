@@ -3,6 +3,7 @@ import { TonConnectButton } from '@tonconnect/ui-react';
 import { useTonConnect } from '../hooks/useTonConnect';
 import Coins from '../components/Coins';
 import { CoinType } from '../types/CoinType';
+import { TON_CURRENCY_ENABLED } from '../config';
 
 export function Header({ coins }: { coins: number }) {
   const { network } = useTonConnect();
@@ -18,9 +19,9 @@ export function Header({ coins }: { coins: number }) {
             </Button>*/}
       <FlexBoxRow>
         <Coins coins={coins} type={CoinType.COIN} />
-        <Coins coins={0} type={CoinType.TON} />
+        {TON_CURRENCY_ENABLED && <Coins coins={0} type={CoinType.TON} />}
       </FlexBoxRow>
-      <TonConnectButton />
+      {TON_CURRENCY_ENABLED && <TonConnectButton />}
     </Styled.Header>
   );
 }
