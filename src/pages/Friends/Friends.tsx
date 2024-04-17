@@ -16,13 +16,15 @@ const Friends = () => {
 
   useEffect(() => {
     tg.BackButton.onClick(() => navigate(-1));
+    tg.BackButton.show();
 
-    tg.MainButton.text = 'Get referral link';
+    tg.MainButton.text = 'Get the referral link';
     tg.MainButton.onClick(referFriend);
     tg.MainButton.show();
 
     return () => {
       tg.MainButton.hide();
+      tg.BackButton.hide();
     };
   }, []);
 
