@@ -44,7 +44,7 @@ const Friends = () => {
       </FlexBoxCol>
       <h2 style={{ marginTop: 32 }}>My friends</h2>
 
-      <div style={{ background: 'rgba(0,0,0,.2)', padding: 16, borderRadius: 25, flex: 1 }}>
+      <div style={{ background: 'rgba(0,0,0,.1)', padding: 16, borderRadius: 25, flex: 1 }}>
         <table style={{ width: '100%' }}>
           {friendsData?.friends.length ? (
             <tbody>
@@ -53,7 +53,8 @@ const Friends = () => {
                   <td>
                     <span
                       style={{
-                        background: '#e4e4e4',
+                        background:
+                          index === 0 ? '#ffe13f' : index === 1 ? '#b4b4b4' : index === 2 ? '#ca7e29' : '#cacaca',
                         width: 25,
                         height: 25,
                         display: 'flex',
