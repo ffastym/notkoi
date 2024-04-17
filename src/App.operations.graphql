@@ -59,7 +59,3 @@ mutation SellFish ($bitingId: ID!) {
 mutation ReleaseFish ($bitingId: ID!) {
   releaseFish(bitingId: $bitingId)
 }
-
-query FriendsCount {
-  friendsCount
-}

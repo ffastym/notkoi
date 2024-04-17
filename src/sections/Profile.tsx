@@ -9,7 +9,15 @@ export function Profile({ isVisible, hide }: DialogProps) {
   if (!data) return null;
 
   return (
-    <Overlay visible={isVisible} title={'Profile'} onClose={hide}>
+    <Overlay
+      visible={isVisible}
+      title={'Profile'}
+      onClose={hide}
+      accept={{
+        text: 'OK',
+        action: hide,
+      }}
+    >
       <ComingSoon>Your profile information, stats and achievements</ComingSoon>
     </Overlay>
   );

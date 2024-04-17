@@ -92,7 +92,7 @@ export type MutationUpgradeBoxArgs = {
 export type Query = {
   __typename?: 'Query';
   catchFish: Biting;
-  friendsCount: Scalars['Float'];
+  friends: Array<User>;
   login: User;
   tackleBox: Box;
   user: User;
@@ -117,6 +117,7 @@ export type User = {
   createdAt: Scalars['Float'];
   deletedAt: Scalars['Float'];
   first_name: Scalars['String'];
+  fullName: Scalars['String'];
   id: Scalars['ID'];
   language_code: Scalars['String'];
   lastLoginDate: Scalars['DateTime'];

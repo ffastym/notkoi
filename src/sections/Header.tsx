@@ -18,8 +18,8 @@ export function Header({ coins }: { coins: number }) {
                 : "N/A"}
             </Button>*/}
       <FlexBoxRow>
-        <Coins coins={coins} type={CoinType.COIN} />
-        {TON_CURRENCY_ENABLED && <Coins coins={0} type={CoinType.TON} />}
+        <Coins coins={coins} type={CoinType.COIN} style={{ color: '#fff' }} />
+        {TON_CURRENCY_ENABLED && <Coins style={{ color: '#fff', marginRight: 8 }} coins={0} type={CoinType.TON} />}
       </FlexBoxRow>
       {TON_CURRENCY_ENABLED && <TonConnectButton />}
     </Styled.Header>

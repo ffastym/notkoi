@@ -1,4 +1,3 @@
-import '../../App.css';
 import styled from 'styled-components';
 import { BaitImg, LakePicture, Rod } from '../../components/styled/styled';
 import '@twa-dev/sdk';
