@@ -19,7 +19,6 @@ import {
   useSellFishMutation,
 } from '../../App.operations.generated';
 import { client } from '../../config/apollo';
-import { FishGone } from '../../sections/FishGone';
 import { useTelegram } from '../../hooks/useTelegram';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute, getRouteWithSlash } from '../../types/AppRoute';
@@ -50,7 +49,6 @@ function Home({ user }: { user: LoginDataFragment }) {
   const [isTackleBoxVisible, setIsTackleBoxVisible] = useState(false);
   const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
   const [isProfiledVisible, setIsProfileVisible] = useState(false);
-  const [isFishGoneVisible, setIsFishGoneVisible] = useState(false);
   const [bitingPower, setBitingPower] = useState(0);
 
   const { data: bitingData } = useBitingSubscription({
@@ -188,12 +186,12 @@ function Home({ user }: { user: LoginDataFragment }) {
   };
 
   const showFishGone = () => {
-    window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
-    setIsFishGoneVisible(true);
-  };
-
-  const hideFishGone = () => {
-    setIsFishGoneVisible(false);
+    try {
+      tg.HapticFeedback.notificationOccurred('error');
+      tg.showAlert('Oops... Your fish is gone 😢. Try to pull the fish more carefully');
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const showProfile = () => {
@@ -301,7 +299,6 @@ function Home({ user }: { user: LoginDataFragment }) {
           <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} tackleBoxId={user.tackleBoxId} />
         )}
         {isLeaderboardVisible && <Leaderboard isVisible={isLeaderboardVisible} hide={hideLeaderboard} />}
-        <FishGone isVisible={isFishGoneVisible} hide={hideFishGone} />
         {isProfiledVisible && <Profile hide={hideProfile} isVisible={isProfiledVisible} />}
       </AppContainer>
     </StyledApp>
