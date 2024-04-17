@@ -1,8 +1,8 @@
 import { useApollo } from './apollo/useApollo';
-import { AppAuth } from './AppAuth';
+import App from './App';
 
 export function AppWrapper() {
   useApollo();
 
-  return <AppAuth />;
+  return <App />;
 }
