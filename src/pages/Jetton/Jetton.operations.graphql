@@ -1,0 +1,3 @@
+mutation Withdraw($coins: Float!) {
+  withdraw(coins: $coins)
+}

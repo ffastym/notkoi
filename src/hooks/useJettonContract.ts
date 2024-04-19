@@ -41,15 +41,9 @@ export function useJettonContract() {
         amount,
       };
 
-      console.log(jettonContract, ' -->>> jettonContract');
-
       if (!jettonContract) {
         return null;
       }
-
-      console.log(sender, ' -->>> sender');
-
-      console.log(message, ' -->>> message');
 
       await jettonContract.send(
         sender,

@@ -2,7 +2,7 @@ import { useJettonContract } from '../../hooks/useJettonContract';
 import { useTonConnect } from '../../hooks/useTonConnect';
 import { Button, FlexBoxCol, PageWrapper } from '../../components/styled/styled';
 import { Header } from '../../sections/Header';
-import { LoginDataFragment } from '../../App.operations.generated';
+import { LoginDataFragment, LoginDataFragmentDoc } from '../../App.operations.generated';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,8 @@ import Coins from '../../components/Coins';
 import { CoinType } from '../../types/CoinType';
 import { formatPrice } from '../../common/utils/priceUtils';
 import { AppRoute, getRouteWithSlash } from '../../types/AppRoute';
+import { useWithdrawMutation } from './Jetton.operations.generated';
+import { client } from '../../config/apollo';
 
 const MIN_COINS_AMOUNT_FOR_MINT = 10000000;
 const NOTKOI_COINS_COST = 10000;
@@ -19,9 +21,32 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
   const navigate = useNavigate();
   const { connected } = useTonConnect();
   const { mint } = useJettonContract();
-  const { refreshBalance } = useJettonContract();
+  const [callWithdraw] = useWithdrawMutation({ fetchPolicy: 'no-cache' });
 
   const handleGoHome = useCallback(() => navigate(getRouteWithSlash(AppRoute.HOME)), [navigate]);
+
+  const updateCoins = useCallback(
+    (coins: number) => {
+      client.cache.updateFragment(
+        {
+          fragment: LoginDataFragmentDoc,
+          id: `User:${user.id}`,
+        },
+        (prevLoginData: any) => {
+          return { ...prevLoginData, coins };
+        },
+      );
+    },
+    [user.id],
+  );
+
+  const withdrawCoins = useCallback(async () => {
+    await callWithdraw({ variables: { coins: user.coins } }).then(({ data }) => {
+      if (data) {
+        updateCoins(data.withdraw);
+      }
+    });
+  }, [callWithdraw, updateCoins, user.coins]);
 
   const notkoiAmount = useMemo(() => {
     const notkoiValue = user.coins / NOTKOI_COINS_COST;
@@ -40,30 +65,28 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
         return;
       }
 
-      // TODO fix conversion
-      await mint(BigInt(Math.round(user.coins / NOTKOI_COINS_COST)));
-      await refreshBalance();
+      try {
+        // TODO fix conversion (digits after comma)
+        await mint(BigInt(Math.round(user.coins / NOTKOI_COINS_COST)));
+        await withdrawCoins();
+      } catch (e) {
+        // do nothing
+      }
     } else {
       tg.showAlert('Connect a wallet to mint tokens');
     }
-  }, [connected, mint, refreshBalance, tg, user.coins]);
+  }, [connected, mint, tg, user.coins, withdrawCoins]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', handleMint);
     tg.MainButton.text = 'Mint tokens';
-
-    if (!tg.MainButton.isVisible) {
-      tg.MainButton.show();
-    }
+    tg.MainButton.isVisible = true;
 
     return () => {
       tg.offEvent('mainButtonClicked', handleMint);
-
-      if (tg.MainButton.isVisible) {
-        tg.MainButton.hide();
-      }
+      tg.MainButton.isVisible = false;
     };
-  }, []);
+  }, [handleMint, tg]);
 
   useEffect(() => {
     tg.onEvent('backButtonClicked', handleGoHome);
@@ -79,7 +102,7 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
         tg.BackButton.hide();
       }
     };
-  }, []);
+  }, [handleGoHome, tg]);
 
   return (
     <PageWrapper style={{ paddingTop: 60 }}>

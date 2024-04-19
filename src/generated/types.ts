@@ -74,6 +74,7 @@ export type Mutation = {
   releaseFish: Scalars['Boolean'];
   sellFish: Scalars['Float'];
   upgradeBox: Box;
+  withdraw: Scalars['Float'];
 };
 
 export type MutationReleaseFishArgs = {
@@ -87,6 +88,10 @@ export type MutationSellFishArgs = {
 export type MutationUpgradeBoxArgs = {
   boxId: Scalars['ID'];
   boxItemType: BoxItemType;
+};
+
+export type MutationWithdrawArgs = {
+  coins: Scalars['Float'];
 };
 
 export type Query = {
