@@ -12,15 +12,17 @@ import { useJettonContract } from '../hooks/useJettonContract';
 export function Header({ coins, style }: { coins: number; style?: CSSProperties }) {
   const { network } = useTonConnect();
   const navigate = useNavigate();
-  const { balance } = useJettonContract();
+  const { refreshBalance, balance } = useJettonContract();
 
   const openJetton = () => {
     navigate(getRouteWithSlash(AppRoute.JETTON));
   };
 
   useEffect(() => {
-    console.log(network ? (network === CHAIN.MAINNET ? 'mainnet' : 'testnet') : 'N/A', ' -->>> network');
-  }, [network]);
+    refreshBalance().then(() => {
+      console.log(network ? (network === CHAIN.MAINNET ? 'mainnet' : 'testnet') : 'N/A', ' -->>> network');
+    });
+  }, [network, refreshBalance]);
 
   return (
     <Styled.Header>

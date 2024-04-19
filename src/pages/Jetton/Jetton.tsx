@@ -19,6 +19,7 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
   const navigate = useNavigate();
   const { connected } = useTonConnect();
   const { mint } = useJettonContract();
+  const { refreshBalance } = useJettonContract();
 
   const notkoiAmount = useMemo(() => {
     const notkoiValue = user.coins / NOTKOI_COINS_COST;
@@ -30,7 +31,7 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
         : notkoiValue.toFixed(4);
   }, [user.coins]);
 
-  const handleMint = useCallback(() => {
+  const handleMint = useCallback(async () => {
     if (connected) {
       if (user.coins < MIN_COINS_AMOUNT_FOR_MINT) {
         tg.showAlert(`The minimum value for conversion is ${formatPrice(MIN_COINS_AMOUNT_FOR_MINT)}`);
@@ -38,11 +39,12 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
       }
 
       // TODO fix conversion
-      mint(BigInt(Math.round(user.coins / NOTKOI_COINS_COST)));
+      await mint(BigInt(Math.round(user.coins / NOTKOI_COINS_COST)));
+      await refreshBalance();
     } else {
       tg.showAlert('Connect a wallet to mint tokens');
     }
-  }, [connected, mint, tg, user.coins]);
+  }, [connected, mint, refreshBalance, tg, user.coins]);
 
   useEffect(() => {
     tg.onEvent('mainButtonClicked', handleMint);
