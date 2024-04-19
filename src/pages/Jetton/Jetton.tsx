@@ -14,7 +14,7 @@ import { AppRoute, getRouteWithSlash } from '../../types/AppRoute';
 const MIN_COINS_AMOUNT_FOR_MINT = 10000000;
 const NOTKOI_COINS_COST = 10000;
 
-const Jetton = ({ user }: { user: LoginDataFragment }) => {
+const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string }) => {
   const { tg } = useTelegram();
   const navigate = useNavigate();
   const { connected } = useTonConnect();
@@ -44,31 +44,41 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
     } else {
       tg.showAlert('Connect a wallet to mint tokens');
     }
-  }, [connected, refreshBalance, tg, user.coins]);
+  }, [connected, mint, refreshBalance, tg, user.coins]);
 
   useEffect(() => {
     tg.MainButton.onClick(handleMint);
     tg.MainButton.text = 'Mint tokens';
-    tg.MainButton.show();
     console.log(111, ' -->>> 111');
 
+    if (!tg.MainButton.isVisible) {
+      tg.MainButton.show();
+    }
+
     return () => {
-      tg.MainButton.hide();
+      if (tg.MainButton.isVisible) {
+        tg.MainButton.hide();
+      }
     };
   }, []);
 
   useEffect(() => {
     tg.BackButton.onClick(() => navigate(getRouteWithSlash(AppRoute.HOME)));
-    tg.BackButton.show();
+
+    if (!tg.BackButton.isVisible) {
+      tg.BackButton.show();
+    }
 
     return () => {
-      tg.BackButton.hide();
+      if (tg.BackButton.isVisible) {
+        tg.BackButton.hide();
+      }
     };
-  }, [navigate, tg.BackButton]);
+  }, []);
 
   return (
     <PageWrapper style={{ paddingTop: 60 }}>
-      <Header coins={user.coins} />
+      <Header coins={user.coins} balance={balance} />
       <h1 style={{ textAlign: 'center', marginBottom: 32, fontWeight: 600 }}>Convert your game balance to crypto</h1>
       <FlexBoxCol style={{ alignItems: 'center' }}>
         <img width={100} height={100} src="/img/coin.png" alt="coin" />

@@ -5,6 +5,7 @@ import { AppRoute, getRouteWithSlash } from './types/AppRoute';
 import { useLoginQuery } from './App.operations.generated';
 import Friends from './pages/Friends';
 import Jetton from './pages/Jetton';
+import { useJettonContract } from './hooks/useJettonContract';
 
 const Home = lazy(() => import('./pages/Home'));
 
@@ -13,6 +14,7 @@ const App: FC = () => {
   const suspense = (children: ReactNode, fallback?: ReactNode) => (
     <Suspense fallback={fallback || <div>Loading...</div>}>{children}</Suspense>
   );
+  const { balance } = useJettonContract();
 
   if (!data) {
     return loading ? <span>LOADING</span> : <span>Not authorised</span>;
@@ -21,9 +23,15 @@ const App: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={getRouteWithSlash(AppRoute.HOME)} element={suspense(<Home user={data.login} />)} />
+        <Route
+          path={getRouteWithSlash(AppRoute.HOME)}
+          element={suspense(<Home user={data.login} balance={balance} />)}
+        />
         <Route path={getRouteWithSlash(AppRoute.FRIENDS)} element={suspense(<Friends />)} />
-        <Route path={getRouteWithSlash(AppRoute.JETTON)} element={suspense(<Jetton user={data.login} />)} />
+        <Route
+          path={getRouteWithSlash(AppRoute.JETTON)}
+          element={suspense(<Jetton user={data.login} balance={balance} />)}
+        />
       </Routes>
     </BrowserRouter>
   );

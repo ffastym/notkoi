@@ -1,15 +1,16 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Address, OpenedContract, toNano } from '@ton/core';
 import { Mint, SampleJetton } from '../../build/SampleJetton/tact_SampleJetton';
 import { JettonDefaultWallet } from '../../build/SampleJetton/tact_JettonDefaultWallet';
 import { useAsyncInitialize } from './useAsyncInitialize';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
+import { fromNano } from '@ton/core/src/utils/convert';
 
 export function useJettonContract() {
   const { client } = useTonClient();
   const { wallet, sender } = useTonConnect();
-  const [balance, setBalance] = useState<bigint>();
+  const [balance, setBalance] = useState<string>('0');
 
   const jettonContract = useAsyncInitialize(async () => {
     if (!client || !wallet) return;
@@ -30,7 +31,7 @@ export function useJettonContract() {
   }, [jettonContract, client]);
 
   const refreshBalance = useCallback(async () => {
-    setBalance(jettonWalletContract ? (await jettonWalletContract.getGetWalletData()).balance : BigInt(0));
+    setBalance(jettonWalletContract ? fromNano((await jettonWalletContract.getGetWalletData()).balance) : '0');
   }, [jettonWalletContract]);
 
   const mint = useCallback(
@@ -54,6 +55,10 @@ export function useJettonContract() {
     },
     [jettonContract, sender],
   );
+
+  useEffect(() => {
+    refreshBalance();
+  }, [refreshBalance]);
 
   return {
     jettonWalletAddress: jettonWalletContract?.address.toString(),

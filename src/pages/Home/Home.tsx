@@ -39,7 +39,7 @@ const PULLING_SPEED = 0.5;
 
 const defaultBaitPosition = [50, 35];
 
-function Home({ user }: { user: LoginDataFragment }) {
+function Home({ user, balance }: { user: LoginDataFragment; balance: string }) {
   const { tg } = useTelegram();
   const navigate = useNavigate();
   const [baitTopPosition, setBaitTopPosition] = useState(defaultBaitPosition[1]);
@@ -264,7 +264,7 @@ function Home({ user }: { user: LoginDataFragment }) {
     <StyledApp>
       <AppContainer>
         <LakePicture onTouchStart={preventSelection} onTouchEnd={preventSelection} />
-        <Header coins={user.coins} style={{ color: '#fff' }} />
+        <Header coins={user.coins} style={{ color: '#fff' }} balance={balance} />
         {loadingPercent !== null && <ProgressBar percent={100 - loadingPercent} />}
         <BaitImg
           onTouchStart={preventSelection}

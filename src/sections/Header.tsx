@@ -7,22 +7,18 @@ import { TON_CURRENCY_ENABLED } from '../config';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute, getRouteWithSlash } from '../types/AppRoute';
 import { CSSProperties, useEffect } from 'react';
-import { useJettonContract } from '../hooks/useJettonContract';
 
-export function Header({ coins, style }: { coins: number; style?: CSSProperties }) {
+export function Header({ coins, style, balance }: { coins: number; balance: string; style?: CSSProperties }) {
   const { network } = useTonConnect();
   const navigate = useNavigate();
-  const { refreshBalance, balance } = useJettonContract();
 
   const openJetton = () => {
     navigate(getRouteWithSlash(AppRoute.JETTON));
   };
 
   useEffect(() => {
-    refreshBalance().then(() => {
-      console.log(network ? (network === CHAIN.MAINNET ? 'mainnet' : 'testnet') : 'N/A', ' -->>> network');
-    });
-  }, [network, refreshBalance]);
+    console.log(network ? (network === CHAIN.MAINNET ? 'mainnet' : 'testnet') : 'N/A', ' -->>> network');
+  }, [network]);
 
   return (
     <Styled.Header>

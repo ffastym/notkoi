@@ -54,7 +54,7 @@ const Friends = () => {
                     <span
                       style={{
                         background:
-                          index === 0 ? '#ffe13f' : index === 1 ? '#b4b4b4' : index === 2 ? '#ca7e29' : '#cacaca',
+                          index === 0 ? '#ffe13f' : index === 1 ? '#b4b4b4' : index === 2 ? '#ca7e29' : undefined,
                         width: 25,
                         height: 25,
                         display: 'flex',
