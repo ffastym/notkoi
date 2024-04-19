@@ -3,12 +3,13 @@ import { useTonConnect } from '../../hooks/useTonConnect';
 import { FlexBoxCol, PageWrapper } from '../../components/styled/styled';
 import { Header } from '../../sections/Header';
 import { LoginDataFragment } from '../../App.operations.generated';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import { useNavigate } from 'react-router-dom';
 import Coins from '../../components/Coins';
 import { CoinType } from '../../types/CoinType';
 import { formatPrice } from '../../common/utils/priceUtils';
+import { AppRoute, getRouteWithSlash } from '../../types/AppRoute';
 
 const MIN_COINS_AMOUNT_FOR_MINT = 10000000;
 const NOTKOI_COINS_COST = 10000;
@@ -29,25 +30,39 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
         : notkoiValue.toFixed(4);
   }, [user.coins]);
 
+  const handleMint = useCallback(() => {
+    if (connected) {
+      mint(BigInt(notkoiAmount));
+    } else {
+      tg.showAlert('Connect a wallet to mint tokens');
+    }
+  }, [connected, mint, notkoiAmount, tg]);
+
   useEffect(() => {
-    tg.BackButton.onClick(() => navigate(-1));
-    tg.BackButton.show();
-
     tg.MainButton.text = 'Mint tokens';
-    tg.MainButton.onClick(() => mint(BigInt(notkoiAmount)));
-    tg.MainButton.show();
+    tg.MainButton.onClick(handleMint);
 
-    if (connected && user.coins >= MIN_COINS_AMOUNT_FOR_MINT) {
+    if (user.coins >= MIN_COINS_AMOUNT_FOR_MINT) {
       tg.MainButton.enable();
+      tg.MainButton.isActive = true;
     } else {
       tg.MainButton.disable();
+      tg.MainButton.isActive = false;
     }
 
     return () => {
       tg.MainButton.hide();
+    };
+  }, [handleMint, mint, notkoiAmount, tg.MainButton, user.coins]);
+
+  useEffect(() => {
+    tg.BackButton.onClick(() => navigate(getRouteWithSlash(AppRoute.HOME)));
+    tg.BackButton.show();
+
+    return () => {
       tg.BackButton.hide();
     };
-  }, [navigate, mint, tg.BackButton, tg.MainButton, connected, user.coins, notkoiAmount]);
+  }, [navigate, tg.BackButton]);
 
   return (
     <PageWrapper style={{ paddingTop: 60 }}>
@@ -60,19 +75,8 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
         <img width={100} height={100} src="/img/notkoi-coin.png" alt="NOTKOI" />
         <span style={{ fontSize: 32, fontWeight: 'bold' }}>{notkoiAmount}</span>
         <FlexBoxCol style={{ marginTop: 24, alignItems: 'center' }}>
-          {connected ? (
-            <>
-              <span style={{ color: 'var(--tg-theme-hint-color)' }}>The minimum value for conversion is </span>
-              <Coins
-                style={{ display: 'inline-flex' }}
-                size={12}
-                coins={MIN_COINS_AMOUNT_FOR_MINT}
-                type={CoinType.COIN}
-              />
-            </>
-          ) : (
-            <span>Connect your wallet to complete the conversion</span>
-          )}
+          <span style={{ color: 'var(--tg-theme-hint-color)' }}>The minimum value for conversion is </span>
+          <Coins style={{ display: 'inline-flex' }} size={12} coins={MIN_COINS_AMOUNT_FOR_MINT} type={CoinType.COIN} />
         </FlexBoxCol>
       </FlexBoxCol>
     </PageWrapper>

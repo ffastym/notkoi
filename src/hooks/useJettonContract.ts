@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Address, fromNano, OpenedContract, toNano } from '@ton/core';
 import { Mint, SampleJetton } from '../../build/SampleJetton/tact_SampleJetton';
 import { JettonDefaultWallet } from '../../build/SampleJetton/tact_JettonDefaultWallet';
@@ -43,10 +43,8 @@ export function useJettonContract() {
     getBalance();
   }, [jettonWalletContract]);
 
-  return {
-    jettonWalletAddress: jettonWalletContract?.address.toString(),
-    balance: balance,
-    mint: (amount: bigint) => {
+  const mint = useCallback(
+    (amount: bigint) => {
       const message: Mint = {
         $$type: 'Mint',
         amount,
@@ -60,5 +58,12 @@ export function useJettonContract() {
         message,
       );
     },
+    [jettonContract, sender],
+  );
+
+  return {
+    jettonWalletAddress: jettonWalletContract?.address.toString(),
+    balance: balance,
+    mint,
   };
 }
