@@ -50,11 +50,12 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
     tg.MainButton.onClick(handleMint);
     tg.MainButton.text = 'Mint tokens';
     tg.MainButton.show();
+    console.log(111, ' -->>> 111');
 
     return () => {
       tg.MainButton.hide();
     };
-  }, [handleMint, tg]);
+  }, []);
 
   useEffect(() => {
     tg.BackButton.onClick(() => navigate(getRouteWithSlash(AppRoute.HOME)));
