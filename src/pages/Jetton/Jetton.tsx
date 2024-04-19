@@ -37,26 +37,38 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
     } else {
       tg.showAlert('Connect a wallet to mint tokens');
     }
-  }, [connected, mint, notkoiAmount, tg]);
+  }, [connected, mint, tg, user.coins]);
 
   useEffect(() => {
-    tg.MainButton.text = 'Mint tokens';
-    tg.MainButton.onClick(handleMint);
-
-    if (user.coins >= MIN_COINS_AMOUNT_FOR_MINT) {
-      tg.MainButton.enable();
-      tg.MainButton.isActive = true;
-    } else {
-      tg.MainButton.disable();
-      tg.MainButton.isActive = false;
-    }
-
     tg.MainButton.show();
+    tg.MainButton.text = 'Mint tokens';
 
     return () => {
       tg.MainButton.hide();
     };
-  }, [handleMint, mint, notkoiAmount, tg.MainButton, user.coins]);
+  }, [tg.MainButton]);
+
+  useEffect(() => {
+    tg.onEvent('mainButtonClicked', handleMint);
+
+    return () => {
+      tg.offEvent('mainButtonClicked', handleMint);
+    };
+  }, [handleMint, mint, notkoiAmount, tg, tg.MainButton, user.coins]);
+
+  useEffect(() => {
+    if (user.coins >= MIN_COINS_AMOUNT_FOR_MINT) {
+      tg.MainButton.setParams({
+        color: 'var(--tg-theme-button-color)',
+      });
+      tg.MainButton.enable();
+    } else {
+      tg.MainButton.setParams({
+        color: 'grey',
+      });
+      tg.MainButton.disable();
+    }
+  }, [tg.MainButton, user.coins]);
 
   useEffect(() => {
     tg.BackButton.onClick(() => navigate(getRouteWithSlash(AppRoute.HOME)));
