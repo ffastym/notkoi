@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute, getRouteWithSlash } from './types/AppRoute';
 import { useLoginQuery } from './App.operations.generated';
 import Friends from './pages/Friends';
+import Jetton from './pages/Jetton';
 
 const Home = lazy(() => import('./pages/Home'));
 
@@ -22,6 +23,7 @@ const App: FC = () => {
       <Routes>
         <Route path={getRouteWithSlash(AppRoute.HOME)} element={suspense(<Home user={data.login} />)} />
         <Route path={getRouteWithSlash(AppRoute.FRIENDS)} element={suspense(<Friends />)} />
+        <Route path={getRouteWithSlash(AppRoute.JETTON)} element={suspense(<Jetton user={data.login} />)} />
       </Routes>
     </BrowserRouter>
   );

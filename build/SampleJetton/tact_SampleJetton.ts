@@ -1,25 +1,22 @@
-import { 
-    Cell,
-    Slice, 
-    Address, 
-    Builder, 
-    beginCell, 
-    ComputeError, 
-    TupleItem, 
-    TupleReader, 
-    Dictionary, 
-    contractAddress, 
-    ContractProvider, 
-    Sender, 
-    Contract, 
-    ContractABI, 
-    ABIType,
+import {
     ABIGetter,
     ABIReceiver,
+    ABIType,
+    Address,
+    beginCell,
+    Builder,
+    Cell,
+    Contract,
+    ContractABI,
+    contractAddress,
+    ContractProvider,
+    DictionaryValue,
+    Sender,
+    Slice,
     TupleBuilder,
-    DictionaryValue
-} from 'ton-core';
-import {toNano} from "ton";
+    TupleReader
+} from '@ton/core';
+import { toNano } from "@ton/ton";
 
 export type StateInit = {
     $$type: 'StateInit';
@@ -1059,22 +1056,22 @@ const SampleJetton_receivers: ABIReceiver[] = [
 ]
 
 export class SampleJetton implements Contract {
-    
+
     static async init(owner: Address, content: Cell | null) {
         return await SampleJetton_init(owner, content);
     }
-    
+
     static async fromInit(owner: Address, content: Cell | null) {
         const init = await SampleJetton_init(owner, content);
         const address = contractAddress(0, init);
         return new SampleJetton(address, init);
     }
-    
+
     static fromAddress(address: Address) {
         return new SampleJetton(address);
     }
-    
-    readonly address: Address; 
+
+    readonly address: Address;
     readonly init?: { code: Cell, data: Cell };
     readonly abi: ContractABI = {
         types:  SampleJetton_types,
@@ -1082,12 +1079,12 @@ export class SampleJetton implements Contract {
         receivers: SampleJetton_receivers,
         errors: SampleJetton_errors,
     };
-    
+
     private constructor(address: Address, init?: { code: Cell, data: Cell }) {
         this.address = address;
         this.init = init;
     }
-    
+
     async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: Mint | 'Mint!' | Deploy | TokenUpdateContent | TokenBurnNotification) {
         let body: Cell | null = null;
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Mint') {
@@ -1126,11 +1123,11 @@ export class SampleJetton implements Contract {
             body = beginCell().store(storeTokenBurnNotification(message)).endCell();
         }
         if (body === null) { throw new Error('Invalid message type'); }
-        
+
         await provider.internal(via, { ...args, body: body });
-        
+
     }
-    
+
     async getGetWalletAddress(provider: ContractProvider, owner: Address) {
         let builder = new TupleBuilder();
         builder.writeAddress(owner);
@@ -1138,19 +1135,19 @@ export class SampleJetton implements Contract {
         let result = source.readAddress();
         return result;
     }
-    
+
     async getGetJettonData(provider: ContractProvider) {
         let builder = new TupleBuilder();
         let source = (await provider.get('get_jetton_data', builder.build())).stack;
         const result = loadTupleJettonData(source);
         return result;
     }
-    
+
     async getOwner(provider: ContractProvider) {
         let builder = new TupleBuilder();
         let source = (await provider.get('owner', builder.build())).stack;
         let result = source.readAddress();
         return result;
     }
-    
+
 }

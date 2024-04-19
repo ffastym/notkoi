@@ -5,6 +5,7 @@ export enum AppRoute {
   PROFILE = 'profile',
   LEADERBOARD = 'leaderboard',
   FRIENDS = 'friends',
+  JETTON = 'jetton',
 }
 
 export const getRouteWithSlash = (route: AppRoute, excludeLocality?: boolean): string => {

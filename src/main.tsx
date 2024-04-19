@@ -4,6 +4,7 @@ import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import { client } from './config/apollo';
 import { ApolloProvider } from '@apollo/client';
 import { AppWrapper } from './AppWrapper';
+import 'buffer';
 // this manifest is used temporarily for development purposes
 const manifestUrl = 'https://app.notkoi.site/tonconnect-manifest.json';
 

@@ -1,24 +1,21 @@
-import { 
-    Cell,
-    Slice, 
-    Address, 
-    Builder, 
-    beginCell, 
-    ComputeError, 
-    TupleItem, 
-    TupleReader, 
-    Dictionary, 
-    contractAddress, 
-    ContractProvider, 
-    Sender, 
-    Contract, 
-    ContractABI, 
-    ABIType,
+import {
     ABIGetter,
     ABIReceiver,
+    ABIType,
+    Address,
+    beginCell,
+    Builder,
+    Cell,
+    Contract,
+    ContractABI,
+    contractAddress,
+    ContractProvider,
+    DictionaryValue,
+    Sender,
+    Slice,
     TupleBuilder,
-    DictionaryValue
-} from 'ton-core';
+    TupleReader
+} from '@ton/core';
 
 export type StateInit = {
     $$type: 'StateInit';
@@ -1054,22 +1051,22 @@ const JettonDefaultWallet_receivers: ABIReceiver[] = [
 ]
 
 export class JettonDefaultWallet implements Contract {
-    
+
     static async init(master: Address, owner: Address) {
         return await JettonDefaultWallet_init(master, owner);
     }
-    
+
     static async fromInit(master: Address, owner: Address) {
         const init = await JettonDefaultWallet_init(master, owner);
         const address = contractAddress(0, init);
         return new JettonDefaultWallet(address, init);
     }
-    
+
     static fromAddress(address: Address) {
         return new JettonDefaultWallet(address);
     }
-    
-    readonly address: Address; 
+
+    readonly address: Address;
     readonly init?: { code: Cell, data: Cell };
     readonly abi: ContractABI = {
         types:  JettonDefaultWallet_types,
@@ -1077,14 +1074,14 @@ export class JettonDefaultWallet implements Contract {
         receivers: JettonDefaultWallet_receivers,
         errors: JettonDefaultWallet_errors,
     };
-    
+
     private constructor(address: Address, init?: { code: Cell, data: Cell }) {
         this.address = address;
         this.init = init;
     }
-    
+
     async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: TokenTransfer | TokenTransferInternal | TokenBurn) {
-        
+
         let body: Cell | null = null;
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'TokenTransfer') {
             body = beginCell().store(storeTokenTransfer(message)).endCell();
@@ -1096,16 +1093,16 @@ export class JettonDefaultWallet implements Contract {
             body = beginCell().store(storeTokenBurn(message)).endCell();
         }
         if (body === null) { throw new Error('Invalid message type'); }
-        
+
         await provider.internal(via, { ...args, body: body });
-        
+
     }
-    
+
     async getGetWalletData(provider: ContractProvider) {
         let builder = new TupleBuilder();
         let source = (await provider.get('get_wallet_data', builder.build())).stack;
         const result = loadTupleJettonWalletData(source);
         return result;
     }
-    
+
 }
