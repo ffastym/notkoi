@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "configbot": "node configure.js",
     "predeploy": "npm run build",
-    "deploy": "cp -R build dist && gh-pages -d dist",
+    "deploy": "gh-pages -d dist",
     "lint": "eslint . --ext .ts,.tsx",
     "codegen": "graphql-codegen --config codegen.yml",
     "schema:local": "get-graphql-schema http://localhost:3000/graphql > ./graphql.schema.json.graphql"
