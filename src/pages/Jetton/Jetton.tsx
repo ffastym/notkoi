@@ -44,15 +44,14 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
     } else {
       tg.showAlert('Connect a wallet to mint tokens');
     }
-  }, [connected, mint, refreshBalance, tg, user.coins]);
+  }, [connected, refreshBalance, tg, user.coins]);
 
   useEffect(() => {
-    tg.onEvent('mainButtonClicked', handleMint);
+    tg.MainButton.onClick(handleMint);
     tg.MainButton.text = 'Mint tokens';
     tg.MainButton.show();
 
     return () => {
-      tg.offEvent('mainButtonClicked', handleMint);
       tg.MainButton.hide();
     };
   }, [handleMint, tg]);
