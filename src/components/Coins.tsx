@@ -15,7 +15,13 @@ const Coins = ({ coins, type, style, size, ...rest }: CoinsProps) => {
     <div style={{ display: 'flex', alignItems: 'center', ...style }} {...rest}>
       <img
         style={{ marginRight: 8, height: size || 25, width: size || 25 }}
-        src={type === CoinType.COIN ? '/img/coin.png' : '/img/notkoi-coin.png'}
+        src={
+          type === CoinType.COIN
+            ? '/img/coin.png'
+            : type === CoinType.NOTKOI
+              ? '/img/notkoi-coin.png'
+              : '/img/currency.png'
+        }
         alt="coin"
       />
       <span style={{ fontWeight: 500, textAlign: 'center', width: '100%', display: 'block' }}>

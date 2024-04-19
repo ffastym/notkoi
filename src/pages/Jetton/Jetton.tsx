@@ -33,7 +33,7 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
     tg.BackButton.onClick(() => navigate(-1));
     tg.BackButton.show();
 
-    tg.MainButton.text = 'Convert points to tokens';
+    tg.MainButton.text = 'Mint tokens';
     tg.MainButton.onClick(() => mint(BigInt(notkoiAmount)));
     tg.MainButton.show();
 

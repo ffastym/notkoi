@@ -127,5 +127,5 @@ export type User = {
   tackleBoxId: Scalars['String'];
   telegramId: Scalars['Float'];
   updatedAt: Scalars['Float'];
-  username: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
 };

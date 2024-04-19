@@ -30,7 +30,7 @@ export function Header({ coins, style }: { coins: number; style?: CSSProperties 
           <Coins
             style={{ marginRight: 8, ...style }}
             coins={balance ? Math.round(Number(balance)) : 0}
-            type={CoinType.TON}
+            type={CoinType.NOTKOI}
           />
         )}
       </FlexBoxRow>
