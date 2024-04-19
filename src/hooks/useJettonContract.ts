@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Address, OpenedContract, toNano } from '@ton/core';
-import { Mint, SampleJetton } from '../../build/SampleJetton/tact_SampleJetton';
-import { JettonDefaultWallet } from '../../build/SampleJetton/tact_JettonDefaultWallet';
+import { Mint, SampleJetton } from '../build/SampleJetton/tact_SampleJetton';
+import { JettonDefaultWallet } from '../build/SampleJetton/tact_JettonDefaultWallet';
 import { useAsyncInitialize } from './useAsyncInitialize';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
@@ -41,9 +41,15 @@ export function useJettonContract() {
         amount,
       };
 
+      console.log(jettonContract, ' -->>> jettonContract');
+
       if (!jettonContract) {
         return null;
       }
+
+      console.log(sender, ' -->>> sender');
+
+      console.log(message, ' -->>> message');
 
       await jettonContract.send(
         sender,
