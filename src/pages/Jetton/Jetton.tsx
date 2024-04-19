@@ -32,6 +32,11 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
 
   const handleMint = useCallback(() => {
     if (connected) {
+      if (user.coins < MIN_COINS_AMOUNT_FOR_MINT) {
+        tg.showAlert(`The minimum value for conversion is ${formatPrice(MIN_COINS_AMOUNT_FOR_MINT)}`);
+        return;
+      }
+
       // TODO fix conversion
       mint(BigInt(Math.round(user.coins / NOTKOI_COINS_COST)));
     } else {
@@ -40,35 +45,15 @@ const Jetton = ({ user }: { user: LoginDataFragment }) => {
   }, [connected, mint, tg, user.coins]);
 
   useEffect(() => {
-    tg.MainButton.show();
-    tg.MainButton.text = 'Mint tokens';
-
-    return () => {
-      tg.MainButton.hide();
-    };
-  }, [tg.MainButton]);
-
-  useEffect(() => {
     tg.onEvent('mainButtonClicked', handleMint);
+    tg.MainButton.text = 'Mint tokens';
+    tg.MainButton.show();
 
     return () => {
       tg.offEvent('mainButtonClicked', handleMint);
+      tg.MainButton.hide();
     };
-  }, [handleMint, mint, notkoiAmount, tg, tg.MainButton, user.coins]);
-
-  useEffect(() => {
-    if (user.coins >= MIN_COINS_AMOUNT_FOR_MINT) {
-      tg.MainButton.setParams({
-        color: 'var(--tg-theme-button-color)',
-      });
-      tg.MainButton.enable();
-    } else {
-      tg.MainButton.setParams({
-        color: 'grey',
-      });
-      tg.MainButton.disable();
-    }
-  }, [tg.MainButton, user.coins]);
+  }, [handleMint, tg]);
 
   useEffect(() => {
     tg.BackButton.onClick(() => navigate(getRouteWithSlash(AppRoute.HOME)));
