@@ -21,6 +21,8 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
   const { mint } = useJettonContract();
   const { refreshBalance } = useJettonContract();
 
+  const handleGoHome = useCallback(() => navigate(getRouteWithSlash(AppRoute.HOME)), [navigate]);
+
   const notkoiAmount = useMemo(() => {
     const notkoiValue = user.coins / NOTKOI_COINS_COST;
 
@@ -47,15 +49,16 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
   }, [connected, mint, refreshBalance, tg, user.coins]);
 
   useEffect(() => {
-    tg.MainButton.onClick(handleMint);
+    tg.onEvent('mainButtonClicked', handleMint);
     tg.MainButton.text = 'Mint tokens';
-    console.log(111, ' -->>> 111');
 
     if (!tg.MainButton.isVisible) {
       tg.MainButton.show();
     }
 
     return () => {
+      tg.offEvent('mainButtonClicked', handleMint);
+
       if (tg.MainButton.isVisible) {
         tg.MainButton.hide();
       }
@@ -63,13 +66,15 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
   }, []);
 
   useEffect(() => {
-    tg.BackButton.onClick(() => navigate(getRouteWithSlash(AppRoute.HOME)));
+    tg.onEvent('backButtonClicked', handleGoHome);
 
     if (!tg.BackButton.isVisible) {
       tg.BackButton.show();
     }
 
     return () => {
+      tg.offEvent('backButtonClicked', handleGoHome);
+
       if (tg.BackButton.isVisible) {
         tg.BackButton.hide();
       }

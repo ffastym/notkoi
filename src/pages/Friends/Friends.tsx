@@ -17,19 +17,34 @@ const Friends = () => {
     await referRequest({ fetchPolicy: 'no-cache' });
   }, [referRequest]);
 
-  useEffect(() => {
-    tg.BackButton.onClick(() => navigate(-1));
-    tg.BackButton.show();
+  const handleGoBack = useCallback(() => navigate(-1), [navigate]);
 
+  useEffect(() => {
     tg.MainButton.text = 'Get the referral link';
-    tg.MainButton.onClick(referFriend);
-    tg.MainButton.show();
+    tg.onEvent('backButtonClicked', handleGoBack);
+    tg.onEvent('mainButtonClicked', referFriend);
+
+    if (!tg.BackButton.isVisible) {
+      tg.BackButton.show();
+    }
+
+    if (!tg.MainButton.isVisible) {
+      tg.MainButton.show();
+    }
 
     return () => {
-      tg.MainButton.hide();
-      tg.BackButton.hide();
+      tg.offEvent('backButtonClicked', handleGoBack);
+      tg.offEvent('mainButtonClicked', referFriend);
+
+      if (tg.MainButton.isVisible) {
+        tg.MainButton.hide();
+      }
+
+      if (tg.BackButton.isVisible) {
+        tg.BackButton.hide();
+      }
     };
-  }, [navigate, referFriend, tg.BackButton, tg.MainButton]);
+  }, [handleGoBack, navigate, referFriend, tg, tg.BackButton, tg.MainButton]);
 
   return (
     <PageWrapper>
