@@ -85,7 +85,7 @@ const Friends = () => {
                     <span style={{ fontSize: 16, fontWeight: 500 }}>{friend.fullName}</span>
                   </td>
                   <td>
-                    <Coins coins={friend.coins} type={CoinType.COIN} size={20} />
+                    <Coins coins={+friend.coins} type={CoinType.COIN} size={20} />
                   </td>
                 </tr>
               ))}

@@ -264,7 +264,7 @@ function Home({ user, balance }: { user: LoginDataFragment; balance: string }) {
     <StyledApp>
       <AppContainer>
         <LakePicture onTouchStart={preventSelection} onTouchEnd={preventSelection} />
-        <Header coins={user.coins} style={{ color: '#fff' }} balance={balance} />
+        <Header coins={+user.coins} style={{ color: '#fff' }} balance={balance} />
         {loadingPercent !== null && <ProgressBar percent={100 - loadingPercent} />}
         <BaitImg
           onTouchStart={preventSelection}

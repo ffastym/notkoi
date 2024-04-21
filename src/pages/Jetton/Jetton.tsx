@@ -43,15 +43,15 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
   const withdrawCoins = useCallback(async () => {
     await callWithdraw({ variables: { coins: user.coins } }).then(({ data }) => {
       if (data) {
-        updateCoins(data.withdraw);
+        updateCoins(+data.withdraw);
       }
     });
   }, [callWithdraw, updateCoins, user.coins]);
 
   const notkoiAmount = useMemo(() => {
-    const notkoiValue = user.coins / NOTKOI_COINS_COST;
+    const notkoiValue = +user.coins / NOTKOI_COINS_COST;
 
-    return user.coins > NOTKOI_COINS_COST
+    return +user.coins > NOTKOI_COINS_COST
       ? formatPrice(notkoiValue > MIN_COINS_AMOUNT_FOR_MINT ? Math.ceil(notkoiValue) : Number(notkoiValue.toFixed(1)))
       : notkoiValue <= 0
         ? '0'
@@ -60,14 +60,14 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
 
   const handleMint = useCallback(async () => {
     if (connected) {
-      if (user.coins < MIN_COINS_AMOUNT_FOR_MINT) {
+      if (+user.coins < MIN_COINS_AMOUNT_FOR_MINT) {
         tg.showAlert(`The minimum value for conversion is ${formatPrice(MIN_COINS_AMOUNT_FOR_MINT)}`);
         return;
       }
 
       try {
         // TODO fix conversion (digits after comma)
-        await mint(BigInt(Math.round(user.coins / NOTKOI_COINS_COST)));
+        await mint(BigInt(Math.round(+user.coins / NOTKOI_COINS_COST)));
         await withdrawCoins();
       } catch (e) {
         // do nothing
@@ -106,11 +106,11 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
 
   return (
     <PageWrapper style={{ paddingTop: 60 }}>
-      <Header coins={user.coins} balance={balance} />
+      <Header coins={+user.coins} balance={balance} />
       <h1 style={{ textAlign: 'center', marginBottom: 32, fontWeight: 600 }}>Convert your game balance to crypto</h1>
       <FlexBoxCol style={{ alignItems: 'center' }}>
         <img width={100} height={100} src="/img/coin.png" alt="coin" />
-        <span style={{ fontSize: 32, fontWeight: 'bold' }}>{formatPrice(user.coins)}</span>
+        <span style={{ fontSize: 32, fontWeight: 'bold' }}>{formatPrice(+user.coins)}</span>
         <h2 style={{ fontSize: 32, fontWeight: 'bold', margin: '16px 0' }}>≈</h2>
         <img width={100} height={100} src="/img/notkoi-coin.png" alt="NOTKOI" />
         <span style={{ fontSize: 32, fontWeight: 'bold' }}>{notkoiAmount}</span>
@@ -120,7 +120,7 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
         </FlexBoxCol>
       </FlexBoxCol>
       {!tg.isVersionAtLeast('7') && (
-        <Button style={{ marginTop: 16 }} onClick={handleMint} disabled={user.coins < MIN_COINS_AMOUNT_FOR_MINT}>
+        <Button style={{ marginTop: 16 }} onClick={handleMint} disabled={+user.coins < MIN_COINS_AMOUNT_FOR_MINT}>
           Mint
         </Button>
       )}
