@@ -1,3 +1,3 @@
-mutation Withdraw($coins: Float!) {
+mutation Withdraw($coins: String!) {
   withdraw(coins: $coins)
 }

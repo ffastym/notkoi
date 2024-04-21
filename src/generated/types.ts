@@ -74,7 +74,7 @@ export type Mutation = {
   releaseFish: Scalars['Boolean'];
   sellFish: Scalars['Float'];
   upgradeBox: Box;
-  withdraw: Scalars['Float'];
+  withdraw: Scalars['String'];
 };
 
 export type MutationReleaseFishArgs = {
@@ -91,7 +91,7 @@ export type MutationUpgradeBoxArgs = {
 };
 
 export type MutationWithdrawArgs = {
-  coins: Scalars['Float'];
+  coins: Scalars['String'];
 };
 
 export type Query = {
@@ -118,7 +118,7 @@ export type Subscription = {
 
 export type User = {
   __typename?: 'User';
-  coins: Scalars['Float'];
+  coins: Scalars['String'];
   createdAt: Scalars['Float'];
   deletedAt: Scalars['Float'];
   first_name: Scalars['String'];
@@ -130,7 +130,7 @@ export type User = {
   referralCode: Scalars['String'];
   tackleBox?: Maybe<Box>;
   tackleBoxId: Scalars['String'];
-  telegramId: Scalars['Float'];
+  telegramId: Scalars['String'];
   updatedAt: Scalars['Float'];
   username?: Maybe<Scalars['String']>;
 };

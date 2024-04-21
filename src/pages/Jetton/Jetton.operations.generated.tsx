@@ -4,13 +4,13 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type WithdrawMutationVariables = Types.Exact<{
-  coins: Types.Scalars['Float'];
+  coins: Types.Scalars['String'];
 }>;
 
-export type WithdrawMutation = { __typename?: 'Mutation'; withdraw: number };
+export type WithdrawMutation = { __typename?: 'Mutation'; withdraw: string };
 
 export const WithdrawDocument = gql`
-  mutation Withdraw($coins: Float!) {
+  mutation Withdraw($coins: String!) {
     withdraw(coins: $coins)
   }
 `;

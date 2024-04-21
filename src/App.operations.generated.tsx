@@ -10,7 +10,7 @@ export type BitingSubscription = {
   biting: { __typename?: 'Biting'; id: string; power: number };
 };
 
-export type LoginDataFragment = { __typename?: 'User'; id: string; coins: number; tackleBoxId: string };
+export type LoginDataFragment = { __typename?: 'User'; id: string; coins: string; tackleBoxId: string };
 
 export type UserProfileFragment = { __typename?: 'User'; id: string; referralCode: string };
 
@@ -18,7 +18,7 @@ export type LoginQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type LoginQuery = {
   __typename?: 'Query';
-  login: { __typename?: 'User'; id: string; coins: number; tackleBoxId: string };
+  login: { __typename?: 'User'; id: string; coins: string; tackleBoxId: string };
 };
 
 export type UserQueryVariables = Types.Exact<{ [key: string]: never }>;

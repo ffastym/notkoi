@@ -7,7 +7,7 @@ export type FriendsQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FriendsQuery = {
   __typename?: 'Query';
-  friends: Array<{ __typename?: 'User'; id: string; fullName: string; coins: number }>;
+  friends: Array<{ __typename?: 'User'; id: string; fullName: string; coins: string }>;
 };
 
 export const FriendsDocument = gql`
