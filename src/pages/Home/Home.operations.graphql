@@ -1,0 +1,12 @@
+subscription Biting {
+  biting {
+    id
+    power
+  }
+}
+
+query User {
+  user {
+    ...UserProfile
+  }
+}

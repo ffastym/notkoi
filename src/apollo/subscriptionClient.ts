@@ -1,5 +1,5 @@
 import { Client, ClientOptions, createClient } from 'graphql-ws';
-import { authorization, urlGraphQLSubscriptions } from '../config/apollo';
+import { getInitData, urlGraphQLSubscriptions } from '../config/apollo';
 
 interface SubscriptionClient extends Client {
   restart(): void;
@@ -52,7 +52,7 @@ export const getSubscriptionClient = (): SubscriptionClient =>
       },
       connectionParams: async () => {
         return {
-          accessToken: authorization,
+          accessToken: getInitData(),
         };
       },
     }));

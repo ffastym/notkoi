@@ -1,7 +1,7 @@
 import { Overlay } from '../components/Overlay';
 import { DialogProps } from '../types';
 import { ComingSoon } from '../components/ComingSoon';
-import { useUserQuery } from '../App.operations.generated';
+import { useUserQuery } from '../pages/Home/Home.operations.generated';
 
 export function Profile({ isVisible, hide }: DialogProps) {
   const { data } = useUserQuery({ fetchPolicy: 'cache-and-network' });

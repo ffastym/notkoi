@@ -1,12 +1,12 @@
 import { Overlay } from '../../components/Overlay';
 import { DialogProps } from '../../types';
 import { FlexBoxCol } from '../../components/styled/styled';
-import { LoginDataFragment } from '../../App.operations.generated';
 import { useTackleBoxQuery } from './TackleBox.operations.generated';
 import TackleBoxItem from './TackleBoxItem';
 import { BoxItemType } from '../../generated/types';
+import { UserProfileFragment } from '../../App.operations.generated';
 
-type TackleBoxProps = DialogProps & Pick<LoginDataFragment, 'tackleBoxId'>;
+type TackleBoxProps = DialogProps & Pick<UserProfileFragment, 'tackleBoxId'>;
 
 function TackleBox({ isVisible, hide, tackleBoxId }: TackleBoxProps) {
   const { data, loading } = useTackleBoxQuery({ fetchPolicy: 'cache-and-network', variables: { boxId: tackleBoxId } });

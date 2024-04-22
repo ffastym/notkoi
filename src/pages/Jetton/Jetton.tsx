@@ -2,7 +2,7 @@ import { useJettonContract } from '../../hooks/useJettonContract';
 import { useTonConnect } from '../../hooks/useTonConnect';
 import { Button, FlexBoxCol, PageWrapper } from '../../components/styled/styled';
 import { Header } from '../../sections/Header';
-import { LoginDataFragment, LoginDataFragmentDoc } from '../../App.operations.generated';
+import { UserProfileFragment, UserProfileFragmentDoc } from '../../App.operations.generated';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { client } from '../../config/apollo';
 const MIN_COINS_AMOUNT_FOR_MINT = 10000000;
 const NOTKOI_COINS_COST = 10000;
 
-const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string }) => {
+const Jetton = ({ user, balance }: { user: UserProfileFragment; balance: string }) => {
   const { tg } = useTelegram();
   const navigate = useNavigate();
   const { connected } = useTonConnect();
@@ -29,7 +29,7 @@ const Jetton = ({ user, balance }: { user: LoginDataFragment; balance: string })
     (coins: number) => {
       client.cache.updateFragment(
         {
-          fragment: LoginDataFragmentDoc,
+          fragment: UserProfileFragmentDoc,
           id: `User:${user.id}`,
         },
         (prevLoginData: any) => {

@@ -11,17 +11,17 @@ import { Navigation } from '../../sections/Navigation';
 import { Header } from '../../sections/Header';
 import { PullButton } from '../../sections/PullButton';
 import {
-  LoginDataFragment,
-  LoginDataFragmentDoc,
-  useBitingSubscription,
   useCatchFishLazyQuery,
   useReleaseFishMutation,
+  UserProfileFragment,
+  UserProfileFragmentDoc,
   useSellFishMutation,
 } from '../../App.operations.generated';
 import { client } from '../../config/apollo';
 import { useTelegram } from '../../hooks/useTelegram';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute, getRouteWithSlash } from '../../types/AppRoute';
+import { useBitingSubscription } from './Home.operations.generated';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -39,7 +39,7 @@ const PULLING_SPEED = 0.5;
 
 const defaultBaitPosition = [50, 35];
 
-function Home({ user, balance }: { user: LoginDataFragment; balance: string }) {
+function Home({ user, balance }: { user: UserProfileFragment; balance: string }) {
   const { tg } = useTelegram();
   const navigate = useNavigate();
   const [baitTopPosition, setBaitTopPosition] = useState(defaultBaitPosition[1]);
@@ -226,7 +226,7 @@ function Home({ user, balance }: { user: LoginDataFragment; balance: string }) {
   const updateCoins = (coins: number) => {
     client.cache.updateFragment(
       {
-        fragment: LoginDataFragmentDoc,
+        fragment: UserProfileFragmentDoc,
         id: `User:${user.id}`,
       },
       (prevLoginData: any) => {

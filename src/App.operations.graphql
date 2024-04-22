@@ -1,29 +1,11 @@
-subscription Biting {
-  biting {
-    id
-    power
-  }
-}
-
-fragment LoginData on User {
+fragment UserProfile on User {
   id
   coins
   tackleBoxId
 }
 
-fragment UserProfile on User {
-  id
-  referralCode
-}
-
 query Login {
   login {
-    ...LoginData
-  }
-}
-
-query User {
-  user {
     ...UserProfile
   }
 }

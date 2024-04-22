@@ -5,7 +5,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 // @ts-expect-error sddddd
 import { createUploadLink } from 'apollo-upload-client';
 import { useCallback, useMemo, useRef } from 'react';
-import { authorization, urlGraphQLServer } from '../config/apollo';
+import { getInitData, urlGraphQLServer } from '../config/apollo';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getSubscriptionClient } from './subscriptionClient';
 
@@ -85,9 +85,7 @@ const customFetch = (uri: any, options: any) => {
 
 export function useApollo() {
   const isInitialized = useRef(false);
-  //const { accessToken, refreshToken, logout, login } = useContext(AuthContext);
   const client = useApolloClient();
-  //const [refresh] = useRefreshTokenMutation();
   const pendingRequests = useRef<ResolveFunction[]>([]);
   const isTokenUpdated = useRef(false);
 
@@ -124,7 +122,7 @@ export function useApollo() {
 
   const updateOperationWithToken = useCallback((data: any, operation: Operation) => {
     const oldHeaders = operation.getContext().headers;
-    const authorization = window.Telegram.WebApp.initData;
+    const authorization = getInitData();
 
     operation.setContext({
       headers: {
@@ -196,7 +194,7 @@ export function useApollo() {
   const authLink = useMemo(
     () =>
       setContext((_, { headers }) => {
-        const newHeaders = headers ? { ...headers } : { authorization };
+        const newHeaders = headers ? { ...headers } : { authorization: getInitData() };
 
         return {
           headers: newHeaders,
