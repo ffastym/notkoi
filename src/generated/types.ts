@@ -68,6 +68,12 @@ export type Fish = {
   updatedAt: Scalars['Float'];
 };
 
+export type HealthObjectType = {
+  __typename?: 'HealthObjectType';
+  status: Scalars['String'];
+  timestamp: Scalars['Float'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   referFriend: Scalars['Boolean'];
@@ -98,6 +104,7 @@ export type Query = {
   __typename?: 'Query';
   catchFish: Biting;
   friends: Array<User>;
+  healthCheck: HealthObjectType;
   login: User;
   tackleBox: Box;
   user: User;

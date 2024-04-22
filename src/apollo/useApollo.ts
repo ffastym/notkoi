@@ -19,7 +19,7 @@ const isFile = (value: any) => {
 const isUpload = ({ variables }: { variables: any }) => Object.values(variables).some(isFile);
 
 const isSubscriptionOperation = ({ query }: { query: any }) => {
-  // @ts-ignore
+  // @ts-expect-error sss
   const { kind, operation } = getMainDefinition(query);
   return kind === 'OperationDefinition' && operation === 'subscription';
 };
@@ -117,23 +117,25 @@ export function useApollo() {
     [requestLink, uploadLink],
   );
 
+  const resolvePendingRequests = (token: any) => {
+    pendingRequests.current.map((callback) => callback(token));
+    pendingRequests.current = [];
+  };
+
   const updateOperationWithToken = useCallback((data: any, operation: Operation) => {
     const oldHeaders = operation.getContext().headers;
+    const authorization = window.Telegram.WebApp.initData;
+
     operation.setContext({
       headers: {
         ...oldHeaders,
-        authorization: data.refreshToken.accessToken,
+        authorization,
       },
     });
 
-    //const { accessToken, refreshToken, role }: AuthStorage = data.refreshToken;
-
-    // if (!accessToken) {
-    //   logout();
-    //   throw new Error('error access token');
-    // }
-    //
-    // login({ accessToken, refreshToken }, role);
+    if (!authorization) {
+      throw new Error('error access token');
+    }
   }, []);
 
   const errorLink = useMemo(
@@ -143,9 +145,12 @@ export function useApollo() {
           for (const err of graphQLErrors) {
             switch (err.extensions?.code) {
               case 'UNAUTHENTICATED':
-                // if (!refreshToken) {
-                //   return logout();
-                // }
+                console.log('UNAUTHENTICATED');
+
+                if (!window.Telegram.WebApp.initData) {
+                  console.error('Missed initData');
+                  return;
+                }
 
                 if (isTokenUpdated.current) {
                   return fromPromise(
@@ -160,7 +165,23 @@ export function useApollo() {
                 }
 
                 isTokenUpdated.current = true;
-                return forward(operation);
+
+                return fromPromise(
+                  new Promise((resolve) => resolve(true))
+                    .catch((e) => {
+                      console.error(`useApollo error: ${e.message}`);
+                    })
+                    .finally(() => {
+                      isTokenUpdated.current = false;
+                    }),
+                )
+                  .filter((value) => Boolean(value))
+                  .flatMap(({ data }: any) => {
+                    updateOperationWithToken(data, operation);
+                    resolvePendingRequests(data);
+
+                    return forward(operation);
+                  });
             }
           }
         }
