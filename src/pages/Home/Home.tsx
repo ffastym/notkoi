@@ -230,7 +230,7 @@ function Home({ user, balance }: { user: LoginDataFragment; balance: string }) {
         id: `User:${user.id}`,
       },
       (prevLoginData: any) => {
-        return { ...prevLoginData, coins: prevLoginData.coins + coins };
+        return { ...prevLoginData, coins: +prevLoginData.coins + coins };
       },
     );
   };
