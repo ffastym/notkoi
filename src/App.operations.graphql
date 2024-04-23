@@ -19,6 +19,7 @@ fragment CatchedFish on Fish {
   name
   price
   picture
+  type
 }
 
 fragment BitingWithFish on Biting {

@@ -246,6 +246,11 @@ function Home({ user, balance }: { user: UserProfileFragment; balance: string })
     hideLandingNet();
   };
 
+  const mintNft = async (bitingId: string) => {
+    console.log(bitingId, ' -->>> bitingId');
+    // TODO complete the feature
+  };
+
   const releaseFish = async (bitingId: string) => {
     const { data } = await release({ variables: { bitingId } });
 
@@ -291,6 +296,7 @@ function Home({ user, balance }: { user: UserProfileFragment; balance: string })
             hide={hideLandingNet}
             isVisible={isLandingNetVisible}
             sell={sellFish}
+            mint={mintNft}
             release={releaseFish}
             biting={catchFishData.catchFish}
           />

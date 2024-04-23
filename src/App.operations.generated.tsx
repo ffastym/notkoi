@@ -16,12 +16,19 @@ export type ReferFriendMutationVariables = Types.Exact<{ [key: string]: never }>
 
 export type ReferFriendMutation = { __typename?: 'Mutation'; referFriend: boolean };
 
-export type CatchedFishFragment = { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
+export type CatchedFishFragment = {
+  __typename?: 'Fish';
+  id: number;
+  name: string;
+  price: number;
+  picture: string;
+  type: Types.FishType;
+};
 
 export type BitingWithFishFragment = {
   __typename?: 'Biting';
   id: string;
-  fish: { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
+  fish: { __typename?: 'Fish'; id: number; name: string; price: number; picture: string; type: Types.FishType };
 };
 
 export type CatchFishQueryVariables = Types.Exact<{
@@ -33,7 +40,7 @@ export type CatchFishQuery = {
   catchFish: {
     __typename?: 'Biting';
     id: string;
-    fish: { __typename?: 'Fish'; id: number; name: string; price: number; picture: string };
+    fish: { __typename?: 'Fish'; id: number; name: string; price: number; picture: string; type: Types.FishType };
   };
 };
 
@@ -62,6 +69,7 @@ export const CatchedFishFragmentDoc = gql`
     name
     price
     picture
+    type
   }
 `;
 export const BitingWithFishFragmentDoc = gql`

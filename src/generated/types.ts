@@ -65,8 +65,14 @@ export type Fish = {
   picture: Scalars['String'];
   power: Scalars['Float'];
   price: Scalars['Float'];
+  type: FishType;
   updatedAt: Scalars['Float'];
 };
+
+export enum FishType {
+  Fish = 'FISH',
+  Nft = 'NFT',
+}
 
 export type HealthObjectType = {
   __typename?: 'HealthObjectType';
