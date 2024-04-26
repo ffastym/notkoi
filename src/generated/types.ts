@@ -13,6 +13,14 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Achievement = {
+  __typename?: 'Achievement';
+  breakpoints: Array<Scalars['Float']>;
+  level: Scalars['Float'];
+  name: Scalars['String'];
+  title: Scalars['String'];
+};
+
 export type Biting = {
   __typename?: 'Biting';
   createdAt: Scalars['Float'];
@@ -108,6 +116,7 @@ export type MutationWithdrawArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  achievements: Array<Achievement>;
   catchFish: Biting;
   friends: Array<User>;
   healthCheck: HealthObjectType;

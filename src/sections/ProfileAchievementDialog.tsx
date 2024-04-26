@@ -1,9 +1,13 @@
 import { Overlay } from '../components/Overlay';
 import { DialogProps } from '../types';
-import { ComingSoon } from '../components/ComingSoon';
 import { useUserQuery } from '../pages/Home/Home.operations.generated';
 
-export function Profile({ isVisible, hide }: DialogProps) {
+type ProfileAchievementDialogProps = DialogProps & {
+  title: string;
+  children: JSX.Element;
+};
+
+export function ProfileAchievementDialog({ hide, children, isVisible, title }: ProfileAchievementDialogProps) {
   const { data } = useUserQuery({ fetchPolicy: 'cache-and-network' });
 
   if (!data) return null;
@@ -11,14 +15,14 @@ export function Profile({ isVisible, hide }: DialogProps) {
   return (
     <Overlay
       visible={isVisible}
-      title={'Profile'}
+      title={title}
       onClose={hide}
       accept={{
         text: 'OK',
         action: hide,
       }}
     >
-      <ComingSoon>Your profile information, stats and achievements</ComingSoon>
+      {children}
     </Overlay>
   );
 }

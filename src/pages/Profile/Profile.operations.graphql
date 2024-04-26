@@ -1,0 +1,12 @@
+fragment FullAchievement on Achievement {
+  breakpoints
+  name
+  level
+  title
+}
+
+query Achievements {
+  achievements {
+    ...FullAchievement
+  }
+}
