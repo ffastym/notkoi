@@ -3,7 +3,6 @@ import { BaitImg, LakePicture, Rod } from '../../components/styled/styled';
 import '@twa-dev/sdk';
 import { TouchEventHandler, useEffect, useState } from 'react';
 import { ProgressBar } from '../../components/ProgressBar';
-import { Leaderboard } from '../../sections/Leaderboard';
 import TackleBox from '../../sections/TackleBox';
 import { LandingNet } from '../../sections/LandingNet';
 import { Navigation } from '../../sections/Navigation';
@@ -46,7 +45,6 @@ function Home({ user, balance }: { user: UserProfileFragment; balance: string })
   const [loadingPercent, setLoadingPercent] = useState<number | null>(null);
   const [isLandingNetVisible, setIsLandingNetVisible] = useState(false);
   const [isTackleBoxVisible, setIsTackleBoxVisible] = useState(false);
-  const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
   const [bitingPower, setBitingPower] = useState(0);
 
   const { data: bitingData } = useBitingSubscription({
@@ -176,11 +174,7 @@ function Home({ user, balance }: { user: UserProfileFragment; balance: string })
   };
 
   const showLeaderboard = () => {
-    setIsLeaderboardVisible(true);
-  };
-
-  const hideLeaderboard = () => {
-    setIsLeaderboardVisible(false);
+    navigate(getRouteWithSlash(AppRoute.LEADERBOARD));
   };
 
   const showFishGone = () => {
@@ -298,7 +292,6 @@ function Home({ user, balance }: { user: UserProfileFragment; balance: string })
         {isTackleBoxVisible && (
           <TackleBox isVisible={isTackleBoxVisible} hide={hideTackleBox} tackleBoxId={user.tackleBoxId} />
         )}
-        {isLeaderboardVisible && <Leaderboard isVisible={isLeaderboardVisible} hide={hideLeaderboard} />}
       </AppContainer>
     </StyledApp>
   );

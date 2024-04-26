@@ -120,6 +120,7 @@ export type Query = {
   catchFish: Biting;
   friends: Array<User>;
   healthCheck: HealthObjectType;
+  leaderboard: Array<User>;
   login: User;
   tackleBox: Box;
   user: User;

@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Friends from './pages/Friends';
 import Jetton from './pages/Jetton';
 import Profile from './pages/Profile';
+import Leaderboard from './pages/Leaderboard';
 
 const App: FC = () => {
   const { data, loading } = useLoginQuery({ fetchPolicy: 'cache-and-network' });
@@ -23,6 +24,7 @@ const App: FC = () => {
         <Route path={getRouteWithSlash(AppRoute.HOME)} element={<Home user={data.login} balance={balance} />} />
         <Route path={getRouteWithSlash(AppRoute.FRIENDS)} element={<Friends />} />
         <Route path={getRouteWithSlash(AppRoute.PROFILE)} element={<Profile />} />
+        <Route path={getRouteWithSlash(AppRoute.LEADERBOARD)} element={<Leaderboard />} />
         <Route path={getRouteWithSlash(AppRoute.JETTON)} element={<Jetton user={data.login} balance={balance} />} />
       </Routes>
     </BrowserRouter>
