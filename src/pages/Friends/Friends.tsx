@@ -2,49 +2,37 @@ import { FlexBoxCol, PageWrapper } from '../../components/styled/styled';
 import { useReferFriendMutation } from '../../App.operations.generated';
 import { useTelegram } from '../../hooks/useTelegram';
 import { useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Coins from '../../components/Coins';
 import { CoinType } from '../../types/CoinType';
 import { useFriendsQuery } from './Friends.operations.generated';
+import { useBackButton } from '../../hooks/useBackButton';
 
 const Friends = () => {
   const { data: friendsData } = useFriendsQuery({ fetchPolicy: 'cache-and-network' });
   const [referRequest] = useReferFriendMutation();
   const { tg } = useTelegram();
-  const navigate = useNavigate();
+  useBackButton();
 
   const referFriend = useCallback(async () => {
     await referRequest({ fetchPolicy: 'no-cache' });
   }, [referRequest]);
 
-  const handleGoBack = useCallback(() => navigate(-1), [navigate]);
-
   useEffect(() => {
     tg.MainButton.text = 'Get the referral link';
-    tg.onEvent('backButtonClicked', handleGoBack);
     tg.onEvent('mainButtonClicked', referFriend);
-
-    if (!tg.BackButton.isVisible) {
-      tg.BackButton.show();
-    }
 
     if (!tg.MainButton.isVisible) {
       tg.MainButton.show();
     }
 
     return () => {
-      tg.offEvent('backButtonClicked', handleGoBack);
       tg.offEvent('mainButtonClicked', referFriend);
 
       if (tg.MainButton.isVisible) {
         tg.MainButton.hide();
       }
-
-      if (tg.BackButton.isVisible) {
-        tg.BackButton.hide();
-      }
     };
-  }, [handleGoBack, navigate, referFriend, tg, tg.BackButton, tg.MainButton]);
+  }, [referFriend, tg]);
 
   return (
     <PageWrapper>

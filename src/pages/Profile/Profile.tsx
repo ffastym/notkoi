@@ -7,11 +7,13 @@ import Achievement from './components/Achievement';
 import { ProfileAchievementDialog } from '../../sections/ProfileAchievementDialog';
 import { formatPrice } from '../../common/utils/priceUtils';
 import { FullAchievementFragment, useAchievementsQuery } from './Profile.operations.generated';
+import { useBackButton } from '../../hooks/useBackButton';
 
 const Profile: FC = () => {
   const { data } = useAchievementsQuery({ fetchPolicy: 'cache-and-network' });
   const [selectedAchievement, setSelectedAchievement] = useState<SelectedAchievement | null>(null);
   const achievements = data?.achievements;
+  useBackButton();
 
   const handleCloseAchievementsDialog = () => {
     setSelectedAchievement(null);

@@ -1,39 +1,12 @@
 import { FlexBoxCol, PageWrapper } from '../../components/styled/styled';
-import { useReferFriendMutation } from '../../App.operations.generated';
-import { useTelegram } from '../../hooks/useTelegram';
-import { useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Coins from '../../components/Coins';
 import { CoinType } from '../../types/CoinType';
 import { useLeaderboardQuery } from './Leaderboard.operations.generated';
+import { useBackButton } from '../../hooks/useBackButton';
 
 const Leaderboard = () => {
   const { data: leaderboardData } = useLeaderboardQuery({ fetchPolicy: 'cache-and-network' });
-  const [referRequest] = useReferFriendMutation();
-  const { tg } = useTelegram();
-  const navigate = useNavigate();
-
-  const referFriend = useCallback(async () => {
-    await referRequest({ fetchPolicy: 'no-cache' });
-  }, [referRequest]);
-
-  const handleGoBack = useCallback(() => navigate(-1), [navigate]);
-
-  useEffect(() => {
-    tg.onEvent('backButtonClicked', handleGoBack);
-
-    if (!tg.BackButton.isVisible) {
-      tg.BackButton.show();
-    }
-
-    return () => {
-      tg.offEvent('backButtonClicked', handleGoBack);
-
-      if (tg.BackButton.isVisible) {
-        tg.BackButton.hide();
-      }
-    };
-  }, [handleGoBack, navigate, referFriend, tg, tg.BackButton]);
+  useBackButton();
 
   return (
     <PageWrapper>
